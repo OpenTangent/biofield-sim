@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-08-31T10:35:43Z",
+  "version": "0.3.0",
+  "bioelectric_benchmark": {
+    "baseline_v": -0.22268455746386454,
+    "perturbed_v": 1.4800879167915166,
+    "recovered_v": 0.8319741892384882,
+    "restoration_score": 0.3806229879382209
+  },
+  "physarum_reservoir_benchmark": {
+    "n_nodes": 15,
+    "n_edges": 80,
+    "mean_final_radius": 0.15205612944878727,
+    "std_final_radius": 0.2520457741409778,
+    "delay_steps": 3,
+    "nmse": 0.8659590856385246,
+    "memory_capacity_pct": 13.404091436147535
+  },
+  "execution_time_sec": 0.04208707809448242
+}
