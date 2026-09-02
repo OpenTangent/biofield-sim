@@ -29,6 +29,27 @@ xdg-open visualizer/index.html      # interactive visualiser
 
 ---
 
+## Current Results (v0.6.0, reproducible — `python3 benchmark_wipe_v060.py`, ~100 s, numpy only)
+
+LLM-free wipe-resumption benchmark (§5 of the paper). 160 facts + 4 goals; each goal has 8 hidden constraints; goal switches at t=1000/2000; after a wipe the retriever gets only the pinned goal. 30 seeds. Full table with s.d. in `benchmark_results_v060.json`.
+
+| Condition | wipe t | recall@8 | recall@16 | calls-to-recover (max 10, 11=fail) |
+|---|---|---|---|---|
+| FLAT cosine (semantic regime) | 800 | 0.25 | 0.39 | 9.73 |
+| FLAT cosine (semantic regime) | 1100 | 0.22 | 0.33 | 10.03 |
+| FLAT cosine (semantic regime) | 1900 | 0.23 | 0.35 | 10.13 |
+| FLAT cosine (structural regime) | 800 | 0.04 | 0.12 | 11.00 |
+| FLAT cosine (structural regime) | 1100 | 0.05 | 0.06 | 11.00 |
+| FLAT cosine (structural regime) | 1900 | 0.05 | 0.07 | 11.00 |
+| HEBB co-activation + decay | 800 | 0.61 | 0.91 | 2.57 |
+| HEBB co-activation + decay | 1100 | 0.30 | 0.55 | 7.53 |
+| HEBB co-activation + decay | 1900 | 0.57 | 0.87 | 2.60 |
+| FLUX Physarum flow rule, μ=1.5 | 800 | 0.22 | 0.42 | 5.00 |
+| FLUX Physarum flow rule, μ=1.5 | 1100 | 0.18 | 0.40 | 8.00 |
+| FLUX Physarum flow rule, μ=1.5 | 1900 | 0.24 | 0.44 | 5.70 |
+
+Chance recall@8 = 0.05. Findings: (1) the decay-weighted co-activation graph recovers goal constraints that similarity retrieval cannot; (2) write-time salience fixation is measurable — HEBB recall halves and retrieval cost triples 100 steps after the goal switch; (3) the literal Physarum flux rule **underperforms** Hebbian decay — competitive pruning is the wrong prior for set retrieval. Post-hoc μ sweep (not pre-registered) in `benchmark_results_v060_exploratory_mu1.0.json` / `_mu0.5.json`: lower μ raises FLUX recall (0.31, 0.38 at t=800) but never reaches HEBB (0.61).
+
 ## Current Results (v0.5.0, reproducible — `python3 benchmark_v050.py`)
 
 Matched protocol: ridge readout, washout 200, 70/30 split, 5 seeds, mean ± std. ESN state dimension is matched to each substrate. Source: `benchmark_results_v050.json`.
@@ -49,11 +70,12 @@ Legacy v0.3.0 (`biofield_sim_v030.py`): FHN restoration score 0.38; Physarum del
 ## Roadmap (blocking the paper)
 
 - [x] Echo State Network baseline with matched readout dimensionality (v0.5.0).
-- [ ] Wipe-resumption benchmark as specified in §5 of the paper (structural-bias substrate vs retrieval-log agent after context wipe).
+- [x] Wipe-resumption benchmark, LLM-free instantiation of §5 (v0.6.0) — positive for HEBB vs FLAT, negative for FLUX.
+- [ ] Read-time goal-conditioned re-weighting (prospective-setpoint layer) to close the post-switch recall gap.
 - [x] Noise-robustness sweep σ ∈ {0.05, 0.1, 0.2} (v0.5.0) — negative result so far.
 - [x] 5 seeds, mean ± std (v0.5.0).
 - [ ] Declared hyperparameter grid per substrate, selected on a validation split, reported in full.
-- [ ] Negative results reported alongside positive ones.
+- [x] Negative results reported alongside positive ones (v0.5.0 reservoirs, v0.6.0 FLUX).
 
 ---
 
