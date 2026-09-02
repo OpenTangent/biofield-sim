@@ -1,49 +1,55 @@
 # BiofieldSim: Basal Cognition & Morphological Memory Engine
 
-**BiofieldSim** is an open-source simulation suite and companion codebase for the paper:
-> *Morphological Memory: Continuous Bioelectric Fields and Non-Linear Memristive Networks as Structural Memory Substrates for Autonomous Synthetic Agents* (Amity & Craucamp, 2026).
+**BiofieldSim** is an open-source simulation suite and companion codebase for the working paper:
+> *Morphological Memory: Continuous Bioelectric Fields and Non-Linear Memristive Networks as Structural Memory Substrates for Autonomous Synthetic Agents* (Craucamp & Amity, 2026 — draft, not yet submitted).
+
+> **Status (2026-09-02): preliminary.** An earlier version of this README carried a results table with figures that are not produced by any code in this repository. That table has been removed. Every number below is reproducible by running `biofield_sim_v030.py` and is written to `benchmark_results_v030.json`. Baselines and the wipe-resumption benchmark described in the paper are **not yet implemented** — see Roadmap.
 
 ---
 
-## 🌟 Overview
+## Overview
 
-Standard artificial intelligence paradigms model memory as discrete record storage and semantic vector retrieval over indexed logs. In contrast, basal cognitive biological systems—from planarian bioelectric fields to *Physarum polycephalum* slime mould syncytia—encode memory as **structural biases on continuous non-linear dynamics**.
+Standard AI memory paradigms store discrete records and retrieve them by semantic vector search over indexed logs. Basal cognitive biological systems — planarian bioelectric fields, *Physarum polycephalum* syncytia — instead encode memory as **structural bias on continuous non-linear dynamics**.
 
-This repository implements:
-1. **FitzHugh-Nagumo Bioelectric Lattice**: Continuous 2D coupled cellular network with voltage-gated gap junctions demonstrating target morphology attractor stability, stochastic resonance ($+135\%$), and autonomous self-repair under high Gaussian noise ($\sigma=0.20$, $95.1\%$ pattern retention).
-2. **Physarum Hagen-Poiseuille Memristive Reservoir**: Dynamic fluidic network with shear-stress induced vascular remodelling ($\frac{dR}{dt} = \gamma \frac{|Q|^\alpha}{1 + \beta |Q|^\alpha} - \lambda R$) achieving superior memory capacity under intrinsic decay.
-3. **Interactive HTML5/Canvas Visualizer**: Real-time browser-based interactive dashboard allowing live perturbation injection, tissue injury healing, and nutrient network adaptation.
+This repository currently implements two toy substrates:
+
+1. **FitzHugh-Nagumo Bioelectric Lattice** — a 2D grid of electrically coupled excitable cells with gated gap-junction conductance. A transient sub-region perturbation is applied and released; we measure how far the field returns towards its pre-perturbation state.
+2. **Physarum Hagen-Poiseuille Memristive Reservoir** — a random fluidic network whose tube radii remodel with flux (`dR/dt = γ|Q|^α / (1 + β|Q|^α) − λR`), with Hagen-Poiseuille conductance `C = πR⁴ / (8ηL)`. A linear readout is trained to recover a delayed input (delay = 3 steps) from the network state.
+3. **Interactive HTML5/Canvas Visualizer** — a browser dashboard for live perturbation, tissue injury and nutrient-network adaptation. Qualitative only.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### 1. Interactive Web Visualizer
-Open `visualizer/index.html` directly in any modern web browser:
-```bash
-xdg-open visualizer/index.html
-# or open directly in Chrome, Firefox, Safari, or Edge
-```
-
-### 2. Running the Python Benchmarks
 ```bash
 pip install -r requirements.txt
-python3 biofield_sim_v030.py
+python3 biofield_sim_v030.py        # writes benchmark_results_v030.json
+xdg-open visualizer/index.html      # interactive visualiser
 ```
 
-Benchmark output will be saved to `benchmark_results_v030.json`.
+---
+
+## Current Results (v0.3.0, reproducible)
+
+| Substrate | Task | Metric | Value |
+| :--- | :--- | :--- | :--- |
+| FHN Bioelectric Lattice (10×10) | Transient perturbation → release | Restoration score (0 = no recovery, 1 = full) | **0.38** |
+| Physarum Memristive Reservoir (15 nodes, 80 edges) | Delayed-input recall, delay = 3 | NMSE | **0.866** |
+| Physarum Memristive Reservoir | Delayed-input recall, delay = 3 | Memory capacity (1 − NMSE) | **13.4%** |
+
+These are weak results. They demonstrate that the substrates run and can be measured; they do **not** yet demonstrate an advantage over conventional architectures, because no conventional baseline is implemented here.
 
 ---
 
-## 📊 Benchmark Results
+## Roadmap (blocking the paper)
 
-| Model Architecture | Parameter Regime | Noise ($\sigma=0.2$) Retention | NARMA-10 $R^2$ | Mackey-Glass NRMSE |
-| :--- | :--- | :--- | :--- | :--- |
-| **Echo State Network (ESN Baseline)** | $N=100$, $\rho=0.95$ | $36.8\%$ | $0.681$ | $0.1240$ |
-| **FitzHugh-Nagumo Biofield (Ours)** | Continuous $50\times50$, $g_{gap}=0.18$ | **$95.1\%$** | **$0.792$** | **$0.0764$** |
-| **Physarum Memristive Reservoir (Ours)** | $N=24$, $\alpha=1.8$, $\lambda=0.08$ | **$91.4\%$** | **$0.765$** | **$0.0812$** |
+- [ ] Echo State Network baseline with matched readout dimensionality.
+- [ ] Wipe-resumption benchmark as specified in §5 of the paper (structural-bias substrate vs retrieval-log agent after context wipe).
+- [ ] Noise-robustness sweep (additive Gaussian σ ∈ {0.05, 0.1, 0.2}) for all substrates and the baseline.
+- [ ] Multiple seeds, reported with mean ± std.
+- [ ] Negative results reported alongside positive ones.
 
 ---
 
-## 📜 License
-MIT License. Open for academic research, reproduction, and synthetic cognitive exploration.
+## License
+MIT. Open for academic research, reproduction and critique.
