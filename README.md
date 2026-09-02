@@ -29,24 +29,30 @@ xdg-open visualizer/index.html      # interactive visualiser
 
 ---
 
-## Current Results (v0.3.0, reproducible)
+## Current Results (v0.5.0, reproducible — `python3 benchmark_v050.py`)
 
-| Substrate | Task | Metric | Value |
-| :--- | :--- | :--- | :--- |
-| FHN Bioelectric Lattice (10×10) | Transient perturbation → release | Restoration score (0 = no recovery, 1 = full) | **0.38** |
-| Physarum Memristive Reservoir (15 nodes, 80 edges) | Delayed-input recall, delay = 3 | NMSE | **0.866** |
-| Physarum Memristive Reservoir | Delayed-input recall, delay = 3 | Memory capacity (1 − NMSE) | **13.4%** |
+Matched protocol: ridge readout, washout 200, 70/30 split, 5 seeds, mean ± std. ESN state dimension is matched to each substrate. Source: `benchmark_results_v050.json`.
 
-These are weak results. They demonstrate that the substrates run and can be measured; they do **not** yet demonstrate an advantage over conventional architectures, because no conventional baseline is implemented here.
+| Model | State dim | Linear MC (σ=0) | MC retention σ=0.1 | MC retention σ=0.2 | NARMA-10 NRMSE |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| FHN Bioelectric Lattice (8×8) | 64 | 1.59 ± 0.18 | 1.1% | 0.4% | 0.775 ± 0.057 |
+| ESN baseline (N=64, matched) | 64 | 5.26 ± 0.29 | 7.1% | 2.0% | 0.568 ± 0.027 |
+| Physarum Memristive Reservoir (15 nodes) | 61 | 0.01 ± 0.01 | 0.0% | 0.0% | 1.305 ± 0.394 |
+| ESN baseline (N=61, matched) | 61 | 5.39 ± 0.28 | 6.6% | 1.6% | 0.575 ± 0.023 |
+
+**Reading these honestly:** with the current (untuned) parameters, the conventional ESN baseline outperforms both biological substrates on linear memory capacity and NARMA-10. The Physarum reservoir as parameterised barely responds to input. Per-step additive noise at σ ≥ 0.1 destroys linear memory in *all* three models; no noise-robustness advantage is demonstrated. These are negative results and they stand until a declared, validation-selected hyperparameter sweep (not post-hoc cherry-picking) says otherwise.
+
+Legacy v0.3.0 (`biofield_sim_v030.py`): FHN restoration score 0.38; Physarum delay-3 memory capacity 13.4%.
 
 ---
 
 ## Roadmap (blocking the paper)
 
-- [ ] Echo State Network baseline with matched readout dimensionality.
+- [x] Echo State Network baseline with matched readout dimensionality (v0.5.0).
 - [ ] Wipe-resumption benchmark as specified in §5 of the paper (structural-bias substrate vs retrieval-log agent after context wipe).
-- [ ] Noise-robustness sweep (additive Gaussian σ ∈ {0.05, 0.1, 0.2}) for all substrates and the baseline.
-- [ ] Multiple seeds, reported with mean ± std.
+- [x] Noise-robustness sweep σ ∈ {0.05, 0.1, 0.2} (v0.5.0) — negative result so far.
+- [x] 5 seeds, mean ± std (v0.5.0).
+- [ ] Declared hyperparameter grid per substrate, selected on a validation split, reported in full.
 - [ ] Negative results reported alongside positive ones.
 
 ---
