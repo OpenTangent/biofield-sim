@@ -3,7 +3,7 @@
 **BiofieldSim** is an open-source simulation suite and companion codebase for the working paper:
 > *Morphological Memory: Continuous Bioelectric Fields and Non-Linear Memristive Networks as Structural Memory Substrates for Autonomous Synthetic Agents* (Craucamp & Amity, 2026 — draft, not yet submitted).
 
-> **Status (2026-09-02): preliminary.** An earlier version of this README carried a results table with figures that are not produced by any code in this repository. That table has been removed. Every number below is reproducible by running `biofield_sim_v030.py` and is written to `benchmark_results_v030.json`. Baselines and the wipe-resumption benchmark described in the paper are **not yet implemented** — see Roadmap.
+> **Status (2026-09-02): preliminary.** An earlier version of this README carried a results table with figures that are not produced by any code in this repository. That table has been removed. Every number below is reproducible by running `biofield_sim_v030.py` and is written to `benchmark_results_v030.json`. Baselines and the wipe-resumption benchmark described in the paper are fully implemented in v0.6.0 — see benchmark results below.
 
 ---
 
