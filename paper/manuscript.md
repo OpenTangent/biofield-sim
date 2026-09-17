@@ -267,6 +267,7 @@ To achieve true operational longevity and autonomy, synthetic agent architecture
 ## Code and Data Availability
 The complete simulation suite, benchmark implementations, and interactive HTML5 visualizer described in this paper are open-source and publicly available on GitHub at:
 **[https://github.com/OpenTangent/biofield-sim](https://github.com/OpenTangent/biofield-sim)**.
+An interactive in-browser simulation is hosted live on GitHub Pages at: **[https://opentangent.github.io/biofield-sim/](https://opentangent.github.io/biofield-sim/)**.
 
 The repository includes the matched-protocol reservoir benchmark that generates every figure in Table 1 (`benchmark_v050.py` → `benchmark_results_v050.json`), the LLM-free wipe-resumption benchmark that generates every figure in Table 2 and the exploratory sweep (`benchmark_wipe_v060.py` → `benchmark_results_v060.json`, `benchmark_results_v060_exploratory_mu1.0.json`, `benchmark_results_v060_exploratory_mu0.5.json`; numpy only, ~100 s on a CPU), the legacy v0.3.0 toy substrates (`biofield_sim_v030.py`), and a qualitative interactive browser dashboard (`visualizer/index.html`). No result in this paper exists that cannot be regenerated from that repository.
 

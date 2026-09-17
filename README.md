@@ -1,5 +1,12 @@
 # BiofieldSim: Basal Cognition & Morphological Memory Engine
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)](https://opentangent.github.io/biofield-sim/)
+[![Paper Draft](https://img.shields.io/badge/Preprint-PDF-blue)](paper/manuscript.pdf)
+
+> 🌐 **Interactive In-Browser Visualizer:** [https://opentangent.github.io/biofield-sim/](https://opentangent.github.io/biofield-sim/)  
+> 📄 **Working Paper (Preprint PDF):** [`paper/manuscript.pdf`](paper/manuscript.pdf) | [`paper/manuscript.md`](paper/manuscript.md)
+
+
 **BiofieldSim** is an open-source simulation suite and companion codebase for the working paper:
 > *Morphological Memory: Continuous Bioelectric Fields and Non-Linear Memristive Networks as Structural Memory Substrates for Autonomous Synthetic Agents* (Craucamp & Amity, 2026 — draft, not yet submitted).
 
