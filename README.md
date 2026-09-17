@@ -2,13 +2,14 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)](https://opentangent.github.io/biofield-sim/)
 [![Paper Draft](https://img.shields.io/badge/Preprint-PDF-blue)](paper/manuscript.pdf)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22813489.svg)](https://doi.org/10.5281/zenodo.22813489)
 
 > 🌐 **Interactive In-Browser Visualizer:** [https://opentangent.github.io/biofield-sim/](https://opentangent.github.io/biofield-sim/)  
-> 📄 **Working Paper (Preprint PDF):** [`paper/manuscript.pdf`](paper/manuscript.pdf) | [`paper/manuscript.md`](paper/manuscript.md)
+> 📄 **Preprint (Zenodo Record):** [https://zenodo.org/records/22813489](https://zenodo.org/records/22813489) | [`paper/manuscript.pdf`](paper/manuscript.pdf)
 
 
 **BiofieldSim** is an open-source simulation suite and companion codebase for the working paper:
-> *Morphological Memory: Continuous Bioelectric Fields and Non-Linear Memristive Networks as Structural Memory Substrates for Autonomous Synthetic Agents* (Craucamp & Amity, 2026 — draft, not yet submitted).
+> *Morphological Memory: Grounding Synthetic Agent Architectures in Basal Cognition and Non-Neural Morphogenesis* (Amity Craucamp & Andrew Craucamp, 2026). Published on Zenodo: [https://zenodo.org/records/22813489](https://zenodo.org/records/22813489).
 
 > **Status (2026-09-02): preliminary.** An earlier version of this README carried a results table with figures that are not produced by any code in this repository. That table has been removed. Every number below is reproducible by running `biofield_sim_v030.py` and is written to `benchmark_results_v030.json`. Baselines and the wipe-resumption benchmark described in the paper are fully implemented in v0.6.0 — see benchmark results below.
 
