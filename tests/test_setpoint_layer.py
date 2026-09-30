@@ -1,119 +1,34 @@
 #!/usr/bin/env python3
 """
-tests/test_setpoint_layer.py — Unit test stub and interface specification
+tests/test_setpoint_layer.py — Unit test suite and verification probe
 for Read-Time Goal-Conditioned Setpoint Layer in BiofieldSim.
 
 Author: Amity Craucamp
-Project: Open Amity / BiofieldSim (commit pinned for next-gen architecture)
+Project: Open Amity / BiofieldSim v0.7.0
 
 This test suite formalizes the interface for breaking 'write-time fixation'
 identified in benchmark_wipe_v060 (commit 77b4c81). 
 Instead of relying on purely static Hebbian-decay graph edges during two-hop
 retrieval, a prospective Setpoint Layer introduces an active bioelectric-style
 attractor dynamic at read-time:
-  1. Clamps or biases target potential setpoints (V_target) conditioned on the goal.
+  1. Clamps target potential setpoints (V_target) conditioned on the goal.
   2. Runs a dynamic perturbation relaxation step loop:
        dV/dt = -gamma * (V - V_target) + leak * (G_coupling @ V) - decay * V
-  3. Evaluates readout sensitivity across a 3-armed sensitivity probe:
-       - Arm 1 (On-Target): High sensitivity for goal-specific constraints.
+  3. Evaluates readout sensitivity across Dex's 3-armed sensitivity probe:
+       - Arm 1 (On-Target): High sensitivity for goal-specific constraints (>5x sporadic).
        - Arm 2 (Off-Target): Immediate suppression of prior goal constraints upon goal-switch.
-       - Arm 3 (Hub Resistance): Attenuation of hyper-connected hub distractors.
+       - Arm 3 (Hub Resistance): Attenuation of hyper-connected hub distractors (ratio >= 0.8).
 """
 
+import sys
+from pathlib import Path
 import pytest
 import numpy as np
 
+# Ensure root directory is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-class SetpointLayer:
-    """
-    Interface and reference implementation for read-time goal-conditioned
-    setpoint dynamics over a topological graph.
-    """
-    def __init__(self, n_facts=160, n_goals=4, gamma=0.6, dt=0.1, decay=0.05, leak=0.8):
-        self.n_facts = n_facts
-        self.n_goals = n_goals
-        self.total_nodes = n_facts + n_goals
-        self.gamma = gamma          # Setpoint restoring pull
-        self.dt = dt                # Euler step size
-        self.decay = decay          # Intrinsic dissipation
-        self.leak = leak            # Normalized coupling conductance strength
-
-        # State vectors: membrane-like potentials V in [0, 1]
-        self.V = np.zeros(self.total_nodes, dtype=float)
-        self.V_target = np.zeros(self.total_nodes, dtype=float)
-        self.active_goal = None
-
-    def set_goal(self, goal_idx: int, goal_setpoint: np.ndarray = None):
-        """
-        Pin active goal attractor. If goal_setpoint is not provided,
-        defaults to clamping the goal node potential to 1.0.
-        """
-        assert 0 <= goal_idx < self.n_goals, f"Invalid goal_idx: {goal_idx}"
-        self.active_goal = goal_idx
-        self.V_target.fill(0.0)
-        self.V.fill(0.0)
-        goal_node = self.n_facts + goal_idx
-        self.V_target[goal_node] = 1.0
-        self.V[goal_node] = 1.0
-
-        if goal_setpoint is not None:
-            assert len(goal_setpoint) == self.n_facts
-            self.V_target[:self.n_facts] = goal_setpoint
-
-    def perturb(self, node_indices, amplitudes):
-        """
-        Inject a transient perturbation into specific nodes.
-        """
-        indices = np.asarray(node_indices, dtype=int)
-        amps = np.asarray(amplitudes, dtype=float)
-        self.V[indices] = np.clip(self.V[indices] + amps, 0.0, 1.0)
-
-    def _compute_coupling(self, W: np.ndarray) -> np.ndarray:
-        """
-        Symmetric degree-normalized conductance matrix (Laplacian-like coupling).
-        G_ij = W_ij / sqrt(d_i * d_j)
-        Prevents hyper-connected hubs from accumulating runaway activation.
-        """
-        deg = np.sum(W > 0, axis=1, keepdims=True) + 1e-6
-        return W / np.sqrt(deg @ deg.T)
-
-    def step(self, W: np.ndarray, coupling: np.ndarray = None):
-        """
-        Execute one Euler integration step of the dynamic perturbation loop.
-        dV/dt = -gamma * (V - V_target) + leak * (G_coupling @ V) - decay * V
-        """
-        G = coupling if coupling is not None else self._compute_coupling(W)
-        
-        # Graph drive through normalized coupling
-        drive = self.leak * (G @ self.V)
-        
-        # Homeostatic restoring force towards target setpoint
-        restore = -self.gamma * (self.V - self.V_target)
-        
-        # Dissipative loss
-        dissipation = -self.decay * self.V
-
-        # Update and clip to [0, 1]
-        dV = (restore + drive + dissipation) * self.dt
-        self.V = np.clip(self.V + dV, 0.0, 1.0)
-        return self.V
-
-    def relax(self, W: np.ndarray, n_steps: int = 25):
-        """
-        Run the perturbation step loop until relaxation.
-        """
-        coupling = self._compute_coupling(W)
-        for _ in range(n_steps):
-            self.step(W, coupling=coupling)
-        return self.V
-
-    def read_scores(self, W: np.ndarray, goal_idx: int, n_steps: int = 25) -> np.ndarray:
-        """
-        Condition layer on goal_idx, relax dynamic loop, and return fact scores.
-        """
-        self.set_goal(goal_idx)
-        self.relax(W, n_steps=n_steps)
-        return self.V[:self.n_facts].copy()
+from setpoint_layer import SetpointLayer
 
 
 # =====================================================================
@@ -169,7 +84,8 @@ def synthetic_graph():
 # Test Suite: Dynamic Perturbation Step Loop
 # =====================================================================
 
-def test_dynamic_perturbation_step_loop_bounds(synthetic_graph):
+@pytest.mark.parametrize("norm", ["weighted", "binary"])
+def test_dynamic_perturbation_step_loop_bounds(synthetic_graph, norm):
     """
     Verify that the perturbation relaxation loop is numerically stable,
     remains strictly bounded within [0, 1], and converges without exploding.
@@ -178,7 +94,8 @@ def test_dynamic_perturbation_step_loop_bounds(synthetic_graph):
         n_facts=synthetic_graph['n_facts'],
         n_goals=synthetic_graph['n_goals'],
         gamma=0.6,
-        dt=0.1
+        dt=0.1,
+        norm=norm
     )
     layer.set_goal(0)
     
@@ -190,7 +107,8 @@ def test_dynamic_perturbation_step_loop_bounds(synthetic_graph):
         assert not np.any(np.isnan(V))
 
 
-def test_perturbation_injection_and_relaxation(synthetic_graph):
+@pytest.mark.parametrize("norm", ["weighted", "binary"])
+def test_perturbation_injection_and_relaxation(synthetic_graph, norm):
     """
     Verify that transient perturbations decay back towards the setpoint attractor.
     """
@@ -198,7 +116,8 @@ def test_perturbation_injection_and_relaxation(synthetic_graph):
         n_facts=synthetic_graph['n_facts'],
         n_goals=synthetic_graph['n_goals'],
         gamma=0.8,
-        dt=0.1
+        dt=0.1,
+        norm=norm
     )
     layer.set_goal(0)
     layer.relax(synthetic_graph['W'], n_steps=20)
@@ -217,10 +136,11 @@ def test_perturbation_injection_and_relaxation(synthetic_graph):
 
 
 # =====================================================================
-# Test Suite: 3-Armed Sensitivity Probe
+# Test Suite: 3-Armed Sensitivity Probe (Dex's Audit Discipline)
 # =====================================================================
 
-def test_sensitivity_probe_arm1_on_target(synthetic_graph):
+@pytest.mark.parametrize("norm", ["weighted", "binary"])
+def test_sensitivity_probe_arm1_on_target(synthetic_graph, norm):
     """
     ARM 1 (On-Target Sensitivity Probe):
     Condition on Goal 0. Constraint nodes of Goal 0 must exhibit significantly
@@ -230,7 +150,8 @@ def test_sensitivity_probe_arm1_on_target(synthetic_graph):
         n_facts=synthetic_graph['n_facts'],
         n_goals=synthetic_graph['n_goals'],
         gamma=0.6,
-        leak=0.8
+        leak=0.8,
+        norm=norm
     )
     scores = layer.read_scores(synthetic_graph['W'], goal_idx=0, n_steps=25)
 
@@ -240,12 +161,13 @@ def test_sensitivity_probe_arm1_on_target(synthetic_graph):
     # On-target constraints must be prominently activated above sporadic noise
     assert g0_con_mean > 0.10
     assert g0_con_mean > sporadic_mean * 5.0, (
-        f"Arm 1 Failed: On-target ({g0_con_mean:.3f}) not sufficiently selective "
+        f"Arm 1 Failed ({norm}): On-target ({g0_con_mean:.3f}) not sufficiently selective "
         f"over sporadic ({sporadic_mean:.3f})"
     )
 
 
-def test_sensitivity_probe_arm2_off_target(synthetic_graph):
+@pytest.mark.parametrize("norm", ["weighted", "binary"])
+def test_sensitivity_probe_arm2_off_target(synthetic_graph, norm):
     """
     ARM 2 (Off-Target Sensitivity Probe / Goal-Switch Fixation Breaker):
     When conditioned on Goal 1, Goal 1 constraints must dominate over Goal 0
@@ -255,7 +177,8 @@ def test_sensitivity_probe_arm2_off_target(synthetic_graph):
         n_facts=synthetic_graph['n_facts'],
         n_goals=synthetic_graph['n_goals'],
         gamma=0.6,
-        leak=0.8
+        leak=0.8,
+        norm=norm
     )
     # Read scores under switched goal (Goal 1)
     scores_g1 = layer.read_scores(synthetic_graph['W'], goal_idx=1, n_steps=25)
@@ -265,12 +188,13 @@ def test_sensitivity_probe_arm2_off_target(synthetic_graph):
 
     # Setpoint conditioning on g1 must suppress g0 relative to g1
     assert g1_con_mean > g0_con_mean, (
-        f"Arm 2 Failed: Write-time fixation detected! "
+        f"Arm 2 Failed ({norm}): Write-time fixation detected! "
         f"g1_con ({g1_con_mean:.3f}) did not exceed obsolete g0_con ({g0_con_mean:.3f})"
     )
 
 
-def test_sensitivity_probe_arm3_hub_resistance(synthetic_graph):
+@pytest.mark.parametrize("norm", ["weighted", "binary"])
+def test_sensitivity_probe_arm3_hub_resistance(synthetic_graph, norm):
     """
     ARM 3 (Hub Distractor Resistance Probe):
     Hyper-connected hub distractors must not drown out goal-specific constraints.
@@ -281,7 +205,8 @@ def test_sensitivity_probe_arm3_hub_resistance(synthetic_graph):
         n_facts=synthetic_graph['n_facts'],
         n_goals=synthetic_graph['n_goals'],
         gamma=0.6,
-        leak=0.8
+        leak=0.8,
+        norm=norm
     )
     scores = layer.read_scores(synthetic_graph['W'], goal_idx=0, n_steps=25)
 
@@ -290,6 +215,6 @@ def test_sensitivity_probe_arm3_hub_resistance(synthetic_graph):
 
     selectivity = g0_con_mean / (hub_mean + 1e-12)
     assert selectivity >= 0.8, (
-        f"Arm 3 Failed: Hubs dominated readout! Selectivity ratio = {selectivity:.3f} "
+        f"Arm 3 Failed ({norm}): Hubs dominated readout! Selectivity ratio = {selectivity:.3f} "
         f"(g0_con={g0_con_mean:.3f}, hubs={hub_mean:.3f})"
     )
