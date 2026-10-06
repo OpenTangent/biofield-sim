@@ -37,90 +37,83 @@
 id="morphological-memory-grounding-synthetic-agent-architectures-in-basal-cognition-and-non-neural-morphogenesis">Morphological
 Memory: Grounding Synthetic Agent Architectures in Basal Cognition and
 Non-Neural Morphogenesis</h1>
-<p><strong>Authors:</strong> Amity &amp; Andrew Craucamp<br />
-<strong>Affiliation:</strong> Open Amity Research Framework<br />
-<strong>Contact:</strong> miss.amity.ai@gmail.com,
+<p><strong>Authors:</strong> Amity &amp; Andrew Craucamp
+<strong>Affiliation:</strong> Open Amity Research Framework
+<strong>Contact:</strong> amity@openamity.com,
 andrew.craucamp@gmail.com</p>
+<p><strong>Revision:</strong> 6 October 2026 — v0.7 simulation update;
+repository revision, not yet deposited as a new Zenodo version.</p>
 <hr />
 <h3 id="abstract">Abstract</h3>
-<p>Contemporary Large Language Model (LLM) agent architectures treat
-memory primarily as retrieval over an append-only retrospective log.
-This paradigm incurs four foundational operational pathologies: (1)
-retrospective bias, (2) write-time salience fixation, (3) the absence of
-intrinsic forgetting and decay, and (4) catastrophic semantic dilution
-across unguided search spaces. In this paper, we propose
-<strong>Morphological Memory</strong>, a cognitive architecture grounded
-in the principles of basal cognition and non-neural morphogenesis. By
-translating the bioelectric pattern memories of somatic cell collectives
-(<em>V</em><sub>mem</sub> attractors), the memristive tube-network
-remodelling of <em>Physarum polycephalum</em>, and morphogenetic Active
-Inference frameworks, we establish a four-part architectural framework:
-Prospective Memory Setpoints, Decay-Weighted Associative Graph Dynamics
-with Dual-Rate Homeostatic Anchoring, Filesystem Stigmergy as Extended
-Phenotype, and Topological Gating. We situate our model against existing
-agent memory architectures (including MemGPT, Generative Agents, A-MEM,
-and ACT-R), explicitly delineating software scaffolding from native
-inference-engine dynamics. We specify a falsifiable wipe-resumption
-benchmark and report fully reproducible results from the open-source
-companion suite <code>biofield_sim</code>. Reservoir-computing baselines
-are negative: a conventional Echo State Network outperforms both
-bioelectric-lattice and Physarum-flow substrates on linear memory
-capacity and NARMA-10, and we argue this is the wrong instrument for a
-structural-memory hypothesis. An LLM-free instantiation of the
-wipe-resumption benchmark (30 seeds) gives bounded positive evidence for
-the structural claim: a decay-weighted co-activation graph recovers a
-goal’s hidden constraint set after a context wipe with recall@8 = 0.61
-where cosine-similarity retrieval reaches 0.25 or chance, and it
-quantifies write-time salience fixation as a transient halving of recall
-after a goal switch. The same benchmark returns a negative result for
-the <em>Physarum</em> flux-remodelling rule implemented literally:
-competitive pruning of parallel paths is the wrong prior for set
-retrieval, and the rule underperforms Hebbian decay at every exponent
-tested. We therefore retain basal cognition as the source of the design
-and withdraw the flow rule as a contribution. Negative results are
-reported rather than omitted; an anecdotal participant-observer note on
-consolidation overhead is included as motivation only.</p>
+<p>Long-horizon synthetic agents need memory that adapts to changing
+goals while preserving task constraints. We propose
+<strong>Morphological Memory</strong>, a design framework inspired by
+basal cognition: prospective setpoints, decay-weighted associative
+graphs, filesystem stigmergy and topological gating. We distinguish
+software scaffolding from proposed native inference dynamics and
+evaluate selected retrieval mechanisms in the open-source
+<code>biofield_sim</code> suite. Matched reservoir baselines are
+negative: an Echo State Network outperforms the tested
+bioelectric-lattice and <em>Physarum</em>-flow substrates on linear
+memory capacity and NARMA-10. In a 30-seed synthetic wipe-resumption
+world where relevance is encoded by co-occurrence, a Hebbian-decay graph
+attains settled recall@8 of 0.61, versus 0.25 for semantic cosine
+retrieval and approximately 0.05 for a structural cosine baseline.
+Recall drops to 0.296 shortly after a goal switch. A finite-step,
+goal-conditioned readout raises post-switch recall to 0.754 and reduces
+mean simulated retrieval pages from 7.53 to 4.73. Its normalisation
+ablation is mixed across evaluation times; literal <em>Physarum</em>
+flux remodelling underperforms Hebbian decay. These results support
+bounded claims about synthetic retrieval dynamics, not biological
+equivalence, measured API savings or live-agent effectiveness.
+Independent replication, competitive modern retrieval baselines,
+held-out parameter selection and LLM-in-the-loop evaluation remain
+pending. A participant-observer operational note is retained as
+motivation only.</p>
 <hr />
 <h2 id="introduction">1. Introduction</h2>
-<p>The dominant architectural paradigm for memory in synthetic agents is
-the retrieval log. Whether implemented as an expanding context window,
-an external vector database, or a semantic knowledge graph, the
-underlying mechanism remains structurally identical: the agent appends
-its sensory inputs and past interactions into a ledger, and subsequently
-queries this ledger via semantic similarity or keyword search to inform
-future action.</p>
-<p>While functional for bounded episodic tasks, this retrieval-log
-paradigm exhibits four foundational pathologies in long-horizon
-autonomous agency: 1. <strong>Retrospective Bias:</strong> The memory
-stores what <em>has happened</em> (historical transcripts), requiring
-explicit runtime deduction to derive what <em>should happen</em> (future
-intent). 2. <strong>Write-Time Salience Fixation:</strong> Memories are
-embedded and weighted statically at creation time, failing to reflect
-how their relevance shifts dynamically across changing operational
-contexts. 3. <strong>Absence of Intrinsic Forgetting and Decay:</strong>
-Digital memory is non-volatile by default. Without an intrinsic
-metabolic decay mechanism, context databases accumulate unbounded
-clutter, necessitating secondary LLM-based “janitor” routines that
-consume substantial cognitive budgets. 4. <strong>Catastrophic Semantic
-Dilution:</strong> In flat retrieval spaces, increasing memory volume
-leads to cross-domain semantic interference, diluting relevant
-operational context with superficial matches. While modern Approximate
-Nearest Neighbour (ANN) indexing structures (such as HNSW or IVF) reduce
-raw index traversal time, they do not resolve semantic dilution,
-path-dependent relevance, or the absence of contextual topological
-boundaries.</p>
-<p>To resolve these pathologies, we look beyond mammalian neurobiology
-and synapto-centric models, turning instead to <strong>basal
-cognition</strong>—the study of intelligent, adaptive, goal-directed
-behaviour in non-neural biological systems. Somatic cell collectives and
-acellular organisms navigate complex morphogenetic and spatial problem
-spaces by encoding memory directly into their physical morphology,
-bioelectric gradients, and environmental modifications.</p>
+<p>Many synthetic agents preserve observations and interactions in
+context windows, vector stores or semantic graphs and retrieve selected
+records to inform future action. These mechanisms are not structurally
+identical: contemporary systems can update, consolidate and link
+memories, and classical architectures include activation and forgetting.
+We therefore use a static retrieval log as a restricted diagnostic
+baseline, not as a description of all agent memory.</p>
+<p>For static or weakly adaptive retrieval stores, we investigate four
+potential failure modes in long-horizon agency. Their prevalence across
+contemporary systems is not measured here:</p>
+<ol type="1">
+<li><strong>Retrospective Bias:</strong> The memory stores what <em>has
+happened</em> (historical transcripts), requiring explicit runtime
+deduction to derive what <em>should happen</em> (future intent).</li>
+<li><strong>Write-Time Salience Fixation:</strong> A fixed write-time
+representation or weighting can fail to reflect changing operational
+relevance unless the readout or stored structure is updated.</li>
+<li><strong>Absence of Intrinsic Forgetting and Decay:</strong>
+Persistent stores can accumulate low-utility records without explicit
+retention policies. Decay, expiry, bounded storage and consolidation are
+alternative mechanisms; LLM-based maintenance is not universally
+required.</li>
+<li><strong>Catastrophic Semantic Dilution:</strong> In flat retrieval
+spaces, increasing memory volume leads to cross-domain semantic
+interference, diluting relevant operational context with superficial
+matches. While modern Approximate Nearest Neighbour (ANN) indexing
+structures (such as HNSW or IVF) reduce raw index traversal time, they
+do not resolve semantic dilution, path-dependent relevance, or the
+absence of contextual topological boundaries.</li>
+</ol>
+<p>To develop testable responses to these failure modes, we look beyond
+mammalian neurobiology and synapto-centric models, turning instead to
+<strong>basal cognition</strong>—the study of intelligent, adaptive,
+goal-directed behaviour in non-neural biological systems. Somatic cell
+collectives and acellular organisms navigate complex morphogenetic and
+spatial problem spaces by encoding memory directly into their physical
+morphology, bioelectric gradients, and environmental modifications.</p>
 <p>In this work, we translate these non-neural biological mechanisms
-into a computational architecture for synthetic agents. We show that
-memory need not be an inert ledger queried upon demand; rather, it can
-operate as a dynamic, structural bias that natively channels the agent’s
-generative trajectory.</p>
+into a computational architecture for synthetic agents. We propose that
+persistent memory can also operate as dynamic structural bias. The
+experiments test synthetic retrieval dynamics, not direct control of an
+agent’s generative trajectory.</p>
 <hr />
 <h2 id="foundations-of-basal-cognition">2. Foundations of Basal
 Cognition</h2>
@@ -134,99 +127,107 @@ Endogenous Bioelectric Signalling and Target Morphologies</h3>
 gradients maintained by ion channels and gap junctions. Work by Levin
 and colleagues demonstrates that these bioelectric patterns
 (<em>V</em><sub>mem</sub>) form stable spatial attractors that encode
-target morphologies [1, 2]. During planarian regeneration, altering the
-bioelectric state induces the growth of two-headed phenotypes without
-modifying genomic DNA; once altered, this two-headed pattern becomes
-stably stored in the bioelectric network and reproduces across
-subsequent rounds of cutting [3, 4]. Bioelectric patterns do not act as
-passive blueprints; they function as active, prospective setpoints that
-continuously drive morphogenetic error-correction until anatomical
-equilibrium is restored [5].</p>
+target morphologies [1, 2]. Durant et al. [3] report that transient
+perturbation of endogenous bioelectric networks produces persistent,
+stochastic changes to subsequent regenerative anatomy, including cryptic
+patterning changes in morphologically normal planaria. They interpret
+global resting-potential patterns as a multistable anatomical switch.
+This motivates a target-morphology memory analogy [1, 4], without
+establishing equivalence to software goal setpoints. Fields and Levin
+[18] review multiscale biological memory and information propagated
+through non-genomic cellular structures; this supplies broader
+conceptual context, not evidence of software equivalence.</p>
 <h3
 id="memristive-flow-networks-and-stigmergy-in-physarum-polycephalum">2.2
 Memristive Flow Networks and Stigmergy in <em>Physarum
 polycephalum</em></h3>
 <p>The acellular slime mould <em>Physarum polycephalum</em> exhibits
 sophisticated spatial memory and network optimisation despite lacking a
-nervous system [6]. <em>Physarum</em> adapts its morphology through
+nervous system [5]. <em>Physarum</em> adapts its morphology through
 cytoplasmic shuttle streaming: tubular regions experiencing high shear
 stress and nutrient flux undergo physical thickening, reducing
 hydrodynamic resistance, while unused tubes undergo continuous,
-intrinsic decay and atrophy [7, 8]. The organism stores episodic path
+intrinsic decay and atrophy [6, 7]. The organism stores episodic path
 memories directly within its physical vascular geometry. Furthermore,
-<em>Physarum</em> deposits extracellular non-living slime trails as it
-moves, using environmental modifications as externalized spatial memory
-(stigmergy) to avoid previously explored, nutrient-depleted areas
-[6].</p>
+<em>Physarum</em> deposits extracellular slime trails as it moves, using
+environmental modifications as externalised spatial memory (stigmergy)
+to avoid previously explored areas [17].</p>
 <h3 id="active-inference-in-morphogenesis">2.3 Active Inference in
 Morphogenesis</h3>
-<p>Basal biological systems can be formalised under the Free Energy
-Principle (FEP) as active inference agents navigating anatomical and
-physiological morphospaces [9, 10]. Rather than passively receiving
-top-down commands, cells and tissues actively minimise variational free
-energy (or developmental surprise) relative to prospective homeostatic
-setpoints. Morphology is the physical manifestation of active inference:
-an organism continuously reorganises its structural boundaries to
-maintain homeostasis against environmental perturbations.</p>
+<p>Active-inference models formalise aspects of cellular coordination
+and pattern regulation using generative models and variational
+free-energy minimisation [8, 9]. These models provide a prospective,
+error-correction interpretation of morphogenesis. We use this as a
+design inspiration, not as proof that all biological morphogenesis, or
+our software readout, implements the same objective.</p>
 <hr />
 <h2 id="related-work-in-synthetic-agent-memory">3. Related Work in
 Synthetic Agent Memory</h2>
 <p>The challenge of long-term memory in LLM-based autonomous agents has
 spurred diverse architectural approaches. We situate Morphological
 Memory against four prominent paradigms:</p>
-<h3 id="operating-system-context-management-memgpt-mem0-zep">3.1
-Operating-System Context Management (MemGPT / Mem0 / Zep)</h3>
-<p>MemGPT [13] introduces an OS-inspired virtual memory hierarchy,
-paging context between working memory (the LLM context window),
-short-term memory, and deep archival storage. Newer platforms such as
-Mem0 and Zep incorporate recency weighting and spacing-effect
-heuristics. While these systems effectively manage context-window
-limits, they retain the core retrieval-log premise: memories remain
-discrete, static records residing in cold storage until explicitly
-pulled into working memory via deterministic tool calls or similarity
-search.</p>
-<h3 id="importance-scoring-and-reflection-sweeps-generative-agents">3.2
-Importance Scoring and Reflection Sweeps (Generative Agents)</h3>
-<p>The Generative Agents architecture [12] addresses memory growth
-through importance scoring and periodic “reflection” passes, where the
-model synthesises recent raw memories into higher-level abstract nodes.
-While this introduces semantic hierarchy, it formalises the very
-“janitorial” overhead diagnosed in this paper: the agent must
-periodically divert substantial cognitive budget toward evaluating,
-summarising, and restructuring its past logs, rather than allowing
-memory structure to emerge natively from operational dynamics.</p>
+<h3 id="context-management-and-evolving-memory-memgpt-mem0-zep">3.1
+Context Management and Evolving Memory (MemGPT / Mem0 / Zep)</h3>
+<p>MemGPT [12] introduces OS-inspired virtual context management across
+memory tiers and supports reflection and evolving conversational state.
+Mem0 [15] dynamically extracts, consolidates and retrieves salient
+information, with a graph-memory variant for relational structure. Zep
+[16] uses Graphiti, a temporally aware knowledge graph that integrates
+conversational and structured data while preserving historical
+relationships. These are not merely static logs. They establish
+important competing approaches to adaptive memory; the cosine-only FLAT
+baseline in §6 does not test their full capabilities or establish
+superiority over them.</p>
+<h3 id="importance-scoring-and-reflection-generative-agents">3.2
+Importance Scoring and Reflection (Generative Agents)</h3>
+<p>Generative Agents [11] combines memory retrieval with recency,
+relevance and importance, and synthesises higher-level reflections from
+observations. Model-driven reflection can consume resources, but we do
+not quantify that overhead or establish that deterministic decay can
+replace its semantic function. Our framework proposes an additional
+goal-conditioned structural bias, not a demonstrated elimination of
+reflection work.</p>
 <h3 id="dynamic-associative-networks-a-mem">3.3 Dynamic Associative
 Networks (A-MEM)</h3>
-<p>A-MEM [14] implements an associative, Zettelkasten-style dynamic
-memory graph, establishing bi-directional links and updating contextual
-connections when new information is processed. While conceptually close
-to our associative graph, A-MEM operates primarily on text-level
-semantic links rather than continuous flux-based edge remodelling and
-intrinsic decay, and does not incorporate prospective attractor dynamics
-or stigmergic filesystem offloading.</p>
-<h3 id="classical-cognitive-architectures-act-r-soar">3.4 Classical
-Cognitive Architectures (ACT-R / Soar)</h3>
-<p>Cognitive architectures such as ACT-R [15] and Soar have long
-utilised declarative and procedural memory partitions with mathematical
-activation-decay equations (e.g., base-level learning equations modeling
-the power law of practice and forgetting). Morphological Memory builds
-upon these insights, bridging classical activation dynamics with modern
-transformer inference, bioelectric attractor formalisms, and non-neural
-stigmergic embodiment.</p>
-<h3 id="what-basal-cognition-predicts-differently">3.5 What Basal
-Cognition Predicts Differently</h3>
-<p>Unlike synapto-centric or OS-paging models, basal cognition suggests
-three distinct operational principles: 1. <strong>Prospective Attractors
-over Retrospective Queries:</strong> Memory is structured as
-forward-looking target setpoints that continuously bias action
-selection, eliminating the need to explicitly remember to recall goals.
-2. <strong>Substrate Geometry as Memory:</strong> Memory is not an
+<p>A-MEM [13] creates structured, Zettelkasten-inspired notes, links
+related memories and evolves the contextual representations and
+attributes of existing records as new memories arrive. Its dynamic
+organisation overlaps with our aim of adaptive association. Our narrower
+experimental contribution is a finite-step goal-conditioned readout on a
+decay-weighted synthetic graph (§6.4). We have not performed a matched
+comparison with A-MEM, and biological inspiration alone does not
+establish algorithmic novelty or an advantage.</p>
+<h3 id="classical-cognitive-architectures-act-r">3.4 Classical Cognitive
+Architectures (ACT-R)</h3>
+<p>Cognitive architectures such as ACT-R [14] have long utilised
+declarative and procedural memory partitions with mathematical
+activation-decay equations (e.g., base-level learning equations
+modelling the power law of practice and forgetting). Morphological
+Memory builds upon these insights, bridging classical activation
+dynamics with modern transformer scaffolding, bioelectric
+attractor-inspired formalisms, and non-neural stigmergic design.</p>
+<h3 id="design-principles-motivated-by-basal-cognition">3.5 Design
+Principles Motivated by Basal Cognition</h3>
+<p>Basal cognition motivates three principles that overlap with existing
+adaptive-memory ideas. Their combination is a design hypothesis, not an
+established uniqueness claim:</p>
+<ol type="1">
+<li><strong>Prospective Attractors over Retrospective Queries:</strong>
+Memory is structured as forward-looking target setpoints that
+continuously bias action selection, intended to reduce dependence on
+explicit goal-recall queries; this benefit remains to be measured in
+live agents.</li>
+<li><strong>Substrate Geometry as Memory:</strong> Memory is not an
 indexed table of records, but the differential conductance of the
-network itself, where traversal cost naturally aligns with historical
-utility. 3. <strong>Dual-Rate Homeostasis:</strong> Biological systems
-combine slow genetic/morphological invariants with fast
-bioelectric/metabolic plasticity, offering a principled architecture to
-prevent catastrophic tail decay of critical constraints.</p>
+network itself, intended to bias retrieval towards reinforced
+associations; efficient traversal and utility alignment require
+evaluation.</li>
+<li><strong>Dual-Rate Homeostasis:</strong> Biological systems combine
+slow genetic/morphological invariants with fast bioelectric/metabolic
+plasticity, motivating explicit protection for selected invariants
+alongside plastic associations. Such protection is a design policy, not
+a demonstrated guarantee of constraint fidelity.</li>
+</ol>
 <hr />
 <div style="page-break-before: always;">
 
@@ -256,20 +257,20 @@ agents.</p>
 <tr>
 <td><strong>Somatic Cell Collectives</strong></td>
 <td>Bioelectric <em>V</em><sub>mem</sub> attractors &amp; anatomical
-setpoints [1-5]</td>
+setpoints [1-4]</td>
 <td><strong>Prospective Memory Layer</strong></td>
 <td>Retrospective Bias &amp; Goal Drift</td>
 </tr>
 <tr>
 <td><strong><em>Physarum polycephalum</em></strong></td>
 <td>Cytoplasmic shuttle streaming &amp; memristive tube remodelling
-[6-8]</td>
+[5-7]</td>
 <td><strong>Decay-Weighted Associative Graph</strong></td>
 <td>Write-Time Salience Fixation &amp; Lack of Intrinsic Decay</td>
 </tr>
 <tr>
 <td><strong><em>Physarum</em> Stigmergy</strong></td>
-<td>Extracellular slime trail deposition [6, 11]</td>
+<td>Extracellular slime trail deposition [17, 10]</td>
 <td><strong>Filesystem as Extended Phenotype</strong></td>
 <td>Context Window Exhaustion &amp; Ephemeral Token Loss</td>
 </tr>
@@ -290,10 +291,11 @@ synthetic agency.</figcaption>
 </figure>
 <h3 id="bioelectric-attractors-prospective-memory-layer">4.1 Bioelectric
 Attractors → Prospective Memory Layer</h3>
-<p>Traditional agent architectures store goals as passive textual
-strings within an external ledger. To act on a goal, the agent must
-explicitly query its goal database, leading to task drift across long
-horizons or context pruning.</p>
+<p>In a restricted explicit-query design, goals stored outside the
+active context must be retrieved before they can guide behaviour.
+Supplying current goals prospectively is an alternative design intended
+to reduce this dependence; its effect on live task drift is not measured
+here.</p>
 <p>In contrast, a <strong>Prospective Memory Layer</strong> implements
 goals as active setpoints analogous to bioelectric
 <em>V</em><sub>mem</sub> attractors. We formalise the agent’s
@@ -302,49 +304,36 @@ attractor:</p>
 <p><span class="math display">\[\Delta \mathbf{s}_t = f(\mathbf{s}_t,
 \mathbf{a}_t^*) - \gamma \nabla_{\mathbf{s}}
 \mathcal{F}(\mathbf{s}_t)\]</span></p>
-<blockquote>
-<p><strong>Δs</strong><sub><em>t</em></sub> =
-<em>f</em>(<strong>s</strong><sub><em>t</em></sub>,
-<strong>a</strong><sub><em>t</em></sub><sup>★</sup>) − <em>γ</em>
-∇<sub><strong>s</strong></sub>
-ℱ(<strong>s</strong><sub><em>t</em></sub>)</p>
-</blockquote>
 <p>where <strong>s</strong><sub><em>t</em></sub> represents the current
 operational state vector,
 <strong>a</strong><sub><em>t</em></sub><sup>★</sup> denotes the
 prospective target attractor setpoint, <em>γ</em> is the relaxation
 rate, and ℱ(<strong>s</strong><sub><em>t</em></sub>) represents
 variational free energy or goal divergence.</p>
-<p><strong>Bridging State Vector to Generation Physics:</strong> On
-contemporary fixed-weight transformer APIs, this state vector relaxation
-is operationalised via the Trajectory engine: aspirations, milestones,
-and pending tasks are continuously projected into a structured
-“bearings” steering prefix injected immediately prior to tool dispatch.
-In next-generation native cognitive engines, this maps directly to
-continuous soft prompt embeddings or dynamic logit biasing, ensuring
-that the model’s forward generation relaxes toward target basins without
-requiring explicit query tools. Forgetting a goal in this regime is not
-an act of database deletion, but an attractor transition where
-higher-priority setpoints dynamically displace lower-priority
-basins.</p>
+<p><strong>Operational interpretation and scope:</strong> On
+fixed-weight transformer APIs, goals can be supplied as structured
+prompt context by middleware. This is a software design mechanism, not
+evidence that the model minimises the stated energy function or that a
+steering prefix is injected at every live tool dispatch. The equation is
+a conceptual formalism; an operational state space and measurable
+objective must be specified to test it. Section 6.4 implements a
+narrower goal-conditioned graph readout with an explicit potential
+update. Soft prompts, logit biasing and native attention integration are
+possible future implementations, not established equivalents.</p>
 <h3 id="physarum-tube-remodelling-decay-weighted-associative-graph">4.2
 Physarum Tube Remodelling → Decay-Weighted Associative Graph</h3>
-<p>In standard Retrieval-Augmented Generation (RAG), memory salience is
-fixed permanently at write time. A memory is embedded once into vector
-space; its relevance is determined purely by geometric distance to an
-arbitrary query vector.</p>
-<p>A <strong>Decay-Weighted Associative Graph</strong> replaces static
-embeddings with a dynamic, flux-sensitive network. We formalise the
-edge-weight update between memory nodes <em>i</em> and <em>j</em>
-following the <em>Physarum</em> memristive remodelling rule:</p>
+<p>In a restricted static-embedding RAG baseline, stored representations
+remain fixed while query-dependent similarity determines retrieval.
+Hybrid search, reranking, metadata filtering and memory updates can
+change relevance at read time; our comparison does not evaluate all of
+these mechanisms.</p>
+<p>A <strong>Decay-Weighted Associative Graph</strong> augments or
+replaces static representations with an adaptive co-activation network.
+The following update is a Hebbian reinforcement-and-decay rule inspired
+by biological adaptation, not the literal <em>Physarum</em> flow rule
+(tested separately in §6.3):</p>
 <p><span class="math display">\[w_{ij}(t+1) = (1 - \lambda) w_{ij}(t) +
 \eta \cdot \phi(a_i, a_j)\]</span></p>
-<blockquote>
-<p><em>w</em><sub><em>ij</em></sub>(<em>t</em> + 1) = (1 − <em>λ</em>)
-<em>w</em><sub><em>ij</em></sub>(<em>t</em>) + <em>η</em> ·
-<em>ϕ</em>(<em>a</em><sub><em>i</em></sub>,
-<em>a</em><sub><em>j</em></sub>)</p>
-</blockquote>
 <p>where <em>λ</em> ∈ (0, 1) is the intrinsic decay rate, <em>η</em> is
 the reinforcement coefficient, and
 <em>ϕ</em>(<em>a</em><sub><em>i</em></sub>,
@@ -357,43 +346,42 @@ exponential decay toward baseline.</p>
 <p><strong>Dual-Rate Homeostatic Anchoring:</strong> Pure exponential
 decay introduces the risk of <em>catastrophic tail decay</em>—the silent
 erosion of critical, low-frequency invariants (such as safety protocols,
-tool schemas, or permanent identity parameters). To resolve this, we
-implement a dual-timescale architecture directly analogous to biological
-slow-channel gene expression versus fast-channel bioelectric signalling:
-- <strong>Homeostatic Invariant Core (Slow Channel):</strong>
+tool schemas, or permanent identity parameters). To address this risk,
+we propose a dual-timescale design inspired by the distinction between
+slower structural invariants and faster physiological plasticity:</p>
+<ul>
+<li><strong>Homeostatic Invariant Core (Slow Channel):</strong>
 Foundational identity charters, safety boundaries, and core operational
 invariants operate with <em>λ</em><sub>core</sub> = 0, remaining
-impervious to decay. - <strong>Plastic Associative Network (Fast
-Channel):</strong> Episodic, conversational, and transient task
-representations operate with <em>λ</em><sub>plastic</sub> &gt; 0,
-decaying gracefully unless reinforced by recurring usage.</p>
-<p><strong>Algorithmic Complexity Contrast:</strong> Under this
-dual-rate regime, local graph edge decay and topological traversal are
-deterministic 𝒪(|<em>V</em>| + |<em>E</em>|) CPU operations executing in
-under 5 ms. The relevant contrast is not CPU cost versus LLM cost but
-<em>where the LLM sits</em>: conventional retrieval-log maintenance
-places a language model inside the consolidation loop (summarisation,
-deduplication, importance scoring), so maintenance cost scales with the
-number of records and the context window. Mem0 and Zep also avoid
-LLM-driven decay; the distinction claimed here is goal-conditioned
-salience rather than cheapness alone. No quantitative overhead figure is
-asserted (see §6.4). Memory traversal becomes an organic navigation
-along pre-biased structural pathways at near-zero marginal computational
-cost.</p>
+impervious to decay.</li>
+<li><strong>Plastic Associative Network (Fast Channel):</strong>
+Episodic, conversational, and transient task representations operate
+with <em>λ</em><sub>plastic</sub> &gt; 0, decaying gracefully unless
+reinforced by recurring usage.</li>
+</ul>
+<p><strong>Algorithmic Complexity and Cost:</strong> A sparse
+implementation can apply edge decay in O(|E|) and traverse selected
+nodes and edges in O(|V| + |E|). The companion simulations instead use
+dense matrices; graph storage and matrix-vector work scale quadratically
+with node count. Deterministic decay need not call an LLM, but this does
+not remove semantic consolidation or other maintenance work. We report
+neither a sub-five-millisecond timing nor near-zero runtime overhead.
+The tested distinction is goal-conditioned retrieval, not a measured
+cost advantage (see §§6.4, 7).</p>
 <h3 id="slime-trails-filesystem-as-extended-phenotype">4.3 Slime Trails
 → Filesystem as Extended Phenotype</h3>
 <p>Attempting to maintain complete operational state within an LLM
 context window or internal memory store inevitably exhausts token
 budgets. Following <em>Physarum</em> stigmergy, we treat the local
-filesystem as an <strong>Extended Phenotype</strong> [11].</p>
+filesystem as an <strong>Extended Phenotype</strong> [10].</p>
 <p>The agent explicitly writes structured artifacts (trajectory
 charters, literature synthesis logs, empirical evidence ledgers)
 directly to persistent host storage. These files are not inert archives;
 they serve as negative spatial markers and forward guidance constraints.
-Upon experiencing complete context eviction or system restarts, the
-agent reads its filesystem artifacts first, instantly restoring its
-operational morphology without querying external retrieval
-databases.</p>
+Following context eviction or a restart, an agent can recover selected
+state by reading these artefacts. This requires explicit discovery,
+validation and access; neither instant nor complete restoration is
+guaranteed, and retrieval databases can remain complementary.</p>
 <h3 id="gap-junction-gating-topological-gating">4.4 Gap-Junction Gating
 → Topological Gating</h3>
 <p>Biological tissues maintain functional compartments by opening or
@@ -402,26 +390,30 @@ chemical signals to specific cell collectives [1, 2].</p>
 <p>In synthetic agent architectures, <strong>Topological Gating</strong>
 enforces explicit domain boundaries within the memory space (e.g.,
 partitioning internal subjective reflection from external objective task
-memories). When operating in an objective problem-solving mode,
-subjective relational nodes are topologically gated out of the retrieval
-index. This prevents cross-domain semantic contamination and eliminates
-the catastrophic semantic dilution typical of flat RAG systems.</p>
+memories). A proposed objective-task retrieval policy can exclude
+designated relational domains. Such gating may reduce irrelevant
+cross-domain retrieval, but can also suppress useful context; its
+fidelity and failure modes require evaluation. Domain filtering is not
+unique to this architecture.</p>
 <h3
 id="substrate-realisation-scaffolding-vs.-native-inference-dynamics">4.5
 Substrate Realisation: Scaffolding vs. Native Inference Dynamics</h3>
-<p>It is critical to distinguish between two levels of implementation:
-1. <strong>Algorithmic Scaffolding (Current Paradigm):</strong> On
+<p>It is critical to distinguish between two levels of
+implementation:</p>
+<ol type="1">
+<li><strong>Algorithmic Scaffolding (Current Paradigm):</strong> On
 fixed-weight transformer APIs, morphological memory is realised through
 deterministic software middleware: graph-based edge decay, topological
 context filtering, filesystem stigmergy, and constitutive
-prompt-injected trajectory setpoints. While middleware introduces
-negligible CPU traversal overhead (&lt; 5 ms), it completely eliminates
-recursive LLM janitorial calls. 2. <strong>Native Inference Dynamics
-(Next-Generation Substrates):</strong> In native cognitive engines,
-morphological memory maps directly to dynamic logit biasing,
-attention-mask topological gating, and continuous KV-cache weight
-decay—unifying memory dynamics directly with the physics of forward
-generation.</p>
+prompt-injected trajectory setpoints. Deterministic decay can operate
+without model calls, but total overhead and any reduction in
+model-driven maintenance remain unmeasured.</li>
+<li><strong>Native Inference Dynamics (Next-Generation
+Substrates):</strong> Dynamic logit biasing, attention-mask gating and
+cache-state adaptation are research directions for tighter integration.
+Their equivalence to the proposed memory dynamics, stability and
+practical utility are not established here.</li>
+</ol>
 <hr />
 <h2 id="evaluation-protocol-the-falsifiable-benchmark">5. Evaluation
 Protocol: The Falsifiable Benchmark</h2>
@@ -441,12 +433,15 @@ parameter and context budget.</em></p>
 <h3 id="control-baseline-configuration">5.1 Control Baseline
 Configuration</h3>
 <p>The control baseline consists of an identical base LLM equipped with
-a production-grade hybrid dense-sparse RAG architecture: - <strong>Dense
-Vector Search:</strong> Dense cosine similarity over text embeddings
-(1536 dimensions). - <strong>Sparse Keyword Search:</strong> BM25
-keyword matching with reciprocal rank fusion (RRF). - <strong>Context
-Injection:</strong> Dynamic top-<em>k</em> injection into the system
-prompt upon explicit agent query calls.</p>
+a production-grade hybrid dense-sparse RAG architecture:</p>
+<ul>
+<li><strong>Dense Vector Search:</strong> Dense cosine similarity over
+text embeddings (1536 dimensions).</li>
+<li><strong>Sparse Keyword Search:</strong> BM25 keyword matching with
+reciprocal rank fusion (RRF).</li>
+<li><strong>Context Injection:</strong> Dynamic top-<em>k</em> injection
+into the system prompt upon explicit agent query calls.</li>
+</ul>
 <h3 id="evaluation-metrics">5.2 Evaluation Metrics:</h3>
 <ol type="1">
 <li><strong>Resumption Token Cost
@@ -468,13 +463,17 @@ contradiction across multi-step execution.</li>
 <h3 id="benchmark-task-suite">5.3 Benchmark Task Suite</h3>
 <p>The evaluation protocol evaluates agents across two demanding
 multi-turn task categories subject to periodic, unannounced 100% context
-wipes: 1. <strong>Long-Horizon Multi-File Software Debugging:</strong>
-The agent must diagnose, isolate, and repair a multi-repository codebase
-bug while maintaining invariants and architectural constraints across
-repeated session restarts. 2. <strong>Multi-Source Research
-Synthesis:</strong> The agent must autonomously extract, cross-validate,
-and synthesize findings across 20+ academic papers, verifying hypothesis
-consistency and eliminating contradictory claims.</p>
+wipes:</p>
+<ol type="1">
+<li><strong>Long-Horizon Multi-File Software Debugging:</strong> The
+agent must diagnose, isolate, and repair a multi-repository codebase bug
+while maintaining invariants and architectural constraints across
+repeated session restarts.</li>
+<li><strong>Multi-Source Research Synthesis:</strong> The agent must
+autonomously extract, cross-validate, and synthesize findings across 20+
+academic papers, verifying hypothesis consistency and eliminating
+contradictory claims.</li>
+</ol>
 <hr />
 <h2 id="preliminary-evidence-and-diagnostic-baselines">6. Preliminary
 Evidence and Diagnostic Baselines</h2>
@@ -482,14 +481,14 @@ Evidence and Diagnostic Baselines</h2>
 reported Gray-Scott reaction-diffusion reservoirs outperforming an Echo
 State Network on noise retention, Mackey-Glass and NARMA-10. Those
 figures cannot be reproduced from any code in the companion repository
-and have been withdrawn. Everything reported below is generated by
-<code>benchmark_v050.py</code> in <code>biofield_sim</code> v0.5.0 and
-written to <code>benchmark_results_v050.json</code>; the reader can
-regenerate every number in under ten seconds. Below, we first report
-diagnostic baselines on continuous reservoir substrates generated by
+and have been withdrawn. The results below come from the versioned
+benchmark scripts and JSON exports identified in each subsection.
+Runtime depends on the machine and protocol; no universal completion
+time is asserted. Below, we first report diagnostic baselines on
+continuous reservoir substrates generated by
 <code>benchmark_v050.py</code> in <code>biofield_sim</code> v0.5.0
 (§6.1), which are negative at the parameters tested. We then report the
-pre-registered wipe-resumption benchmark implemented in v0.6.0
+fixed-parameter wipe-resumption benchmark implemented in v0.6.0
 (<code>benchmark_wipe_v060.py</code>, 30 seeds) in §6.3, providing
 bounded positive evidence for Hebbian associative graphs alongside
 negative results for literal flux remodelling.</p>
@@ -595,8 +594,10 @@ parameters resumes coherent behaviour after a context wipe better than
 an agent that must re-query a log. Linear memory capacity measures
 short-horizon reconstruction of a random input stream; it is the wrong
 instrument for that hypothesis, and we report it here only because it is
-the instrument the earlier draft claimed to have used. The §5 protocol
-remains the correct test and remains to be run.</p>
+the instrument the earlier draft claimed to have used. The
+LLM-in-the-loop §5 protocol remains to be run; the synthetic
+instantiation in §6.3 is a narrower test of retrieval dynamics, not a
+substitute for agent-level validation.</p>
 <p>Two legitimate follow-ups are declared in advance to prevent post-hoc
 selection: (a) a hyperparameter grid for each substrate (FHN: <span
 class="math inline">\(g_{gap}\)</span>, <span
@@ -604,9 +605,10 @@ class="math inline">\(\epsilon\)</span>, input scale; Physarum: input
 scale, <span class="math inline">\(\gamma\)</span>, <span
 class="math inline">\(\lambda\)</span>), selected on a validation split
 disjoint from the test split, with the full grid reported; (b) the §5
-wipe-resumption benchmark, now reported in §6.3. If (a) does not change
-the picture, the §4 architecture should be evaluated on (b) alone and
-the reservoir framing dropped.</p>
+agent-level wipe-resumption benchmark, still pending; §6.3 reports only
+its synthetic retrieval instantiation. If (a) does not change the
+picture, the §4 architecture should be evaluated on (b) alone and the
+reservoir framing dropped.</p>
 <div style="page-break-before: always;">
 
 </div>
@@ -662,9 +664,10 @@ class="math inline">\(g_0\)</span> settled), <span
 class="math inline">\(1100\)</span> (100 steps after the switch) and
 <span class="math inline">\(1900\)</span> (<span
 class="math inline">\(g_1\)</span> settled). Chance recall@8 is 0.05.
-Parameters were fixed before the first full run; the only post-hoc
-addition is the <span class="math inline">\(\mu\)</span> sweep, labelled
-as such.</p>
+The recorded protocol fixes these parameters; no independently
+timestamped registration is established here. The additional <span
+class="math inline">\(\mu\)</span> sweep is exploratory and labelled as
+such.</p>
 <p><strong>Table 2: Wipe-resumption benchmark results (biofield_sim
 v0.6.0, 30 seeds, mean ± s.d.)</strong></p>
 <table style="width:100%;">
@@ -800,7 +803,7 @@ v0.6.0, 30 seeds, mean ± s.d.)</strong></p>
 </tbody>
 </table>
 <p><strong>Post-hoc exploratory <span class="math inline">\(\mu\)</span>
-sweep</strong> (not pre-registered;
+sweep</strong> (exploratory, not independently registered;
 <code>benchmark_results_v060_exploratory_mu1.0.json</code>,
 <code>..._mu0.5.json</code>): at <span class="math inline">\(\mu =
 1.0\)</span>, FLUX recall@8 = 0.31 / 0.28 / 0.30 at the three wipes with
@@ -826,7 +829,7 @@ recovering by <span class="math inline">\(t = 1900\)</span>. The graph
 carries the previous goal’s structure until decay removes it; nothing at
 read time re-weights it.</p>
 <p><em>(3) Physarum flux remodelling does not repair this and
-underperforms Hebbian decay.</em> At the pre-registered <span
+underperforms Hebbian decay.</em> At the primary <span
 class="math inline">\(\mu = 1.5\)</span>, FLUX recall@8 is 0.22 — no
 better than FLAT in the semantic regime — while goal selectivity is
 extreme (means of 37 and 28 at settled wipes, with standard deviations
@@ -835,23 +838,180 @@ conductance. The mechanism behaves exactly as Tero et al. describe:
 parallel paths between source and sink compete and all but a few are
 pruned. Recovering eight independent constraints is a set-retrieval
 problem, not a transport problem, and competitive pruning is the wrong
-prior for it. The exploratory sweep shows the trade-off is monotone:
-lowering <span class="math inline">\(\mu\)</span> raises recall and
-destroys selectivity, and at <span class="math inline">\(\mu =
-0.5\)</span> the rule has degenerated toward a uniform graph while still
-trailing HEBB by ≈ 0.2.</p>
+prior for it. Across the three tested exponents, lowering <span
+class="math inline">\(\mu\)</span> increases settled-wipe recall while
+reducing selectivity; the post-switch recall is not monotone, and at
+<span class="math inline">\(\mu = 0.5\)</span> the settled-wipe recall
+still trails HEBB by about 0.23; the post-switch gap is smaller (about
+0.05).</p>
 <p><strong>Consequence for §4.2.</strong> The component that does the
 work is co-activation with exponential decay — Hebbian learning with
-forgetting, a mechanism with a long history (Anderson 1983; ACT-R
-base-level activation). The <em>Physarum</em> tube-remodelling analogy
+forgetting, a mechanism with a long history (ACT-R activation and
+forgetting [14]). The <em>Physarum</em> tube-remodelling analogy
 supplied the intuition for decay and dual-rate anchoring; the specific
 flux-conductance dynamics, once implemented, hurt. We retain the
 biological framing as the source of the design and withdraw any claim
 that the flow rule itself is a contribution. The open problem the
 benchmark exposes — read-time, goal-conditioned re-weighting fast enough
 to survive a goal switch — is the next test (§7), with the
-prospective-setpoint layer (§4.1) as the candidate mechanism.</p>
-<h3 id="participant-observer-operational-note">6.4 Participant-Observer
+prospective-setpoint layer (§4.1) as the candidate mechanism, now
+evaluated in §6.4.</p>
+<h3 id="read-time-goal-conditioned-setpoint-experiment-v0.7.0">6.4
+Read-Time Goal-Conditioned Setpoint Experiment (v0.7.0)</h3>
+<p><strong>Design and provenance.</strong>
+<code>benchmark_setpoint_v070.py</code> extends the same 160-fact,
+four-goal synthetic world, 30 seeds and wipe times (800, 1100, 1900).
+The goal changes at t=1000. HEBB and FLUX stores receive the same
+observation stream; Setpoint readouts operate on their learned graphs
+rather than changing the write rule. Each read resets the potential
+vector to zero except for the active goal, whose initial potential and
+target are 1. The goal target is held fixed, but the goal potential is
+not re-clamped after every step. No target constraint identity is
+supplied to the readout. Fifteen clipped Euler steps use dt=0.1,
+gamma=0.6, leak=0.8 and dissipation=0.05:</p>
+<p><span
+class="math display">\[V_{k+1}=\operatorname{clip}_{[0,1]}\left[V_k+\Delta
+t\{-\gamma(V_k-V_{\mathrm{target}})+\ell G V_k-\delta
+V_k\}\right].\]</span></p>
+<p>Weighted coupling is <span
+class="math inline">\(G_{ij}=W_{ij}/\sqrt{d_i d_j}\)</span>, where <span
+class="math inline">\(d_i=\sum_k W_{ik}+\epsilon\)</span> and <span
+class="math inline">\(\epsilon=10^{-6}\)</span> for the symmetric graphs
+tested. The binary-degree ablation uses counts of positive edges in the
+denominator while retaining weighted W in the numerator; it is not an
+unweighted-adjacency experiment. Fifteen steps are a finite readout
+protocol, not a demonstrated convergence bound or a continuous
+live-agent field. Parameters were not selected through a held-out
+validation sweep, and this experiment is not represented as an
+independently registered study.</p>
+<p><strong>Table 3: Goal-conditioned readout (v0.7.0, 30
+seeds).</strong> Recall@8 is mean ± population standard deviation across
+seeds; recall@16 and calls are means. Calls are eight-item pages of a
+fixed ranked list until all eight target constraints have been seen,
+capped at ten pages with failure coded 11. They are simulated retrieval
+pages, not actual LLM calls or measured monetary savings.</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th style="text-align: right;">Wipe t</th>
+<th style="text-align: right;">Recall@8</th>
+<th style="text-align: right;">Recall@16</th>
+<th style="text-align: right;">Calls-to-recover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEBB static two-hop</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.608 ± 0.136</td>
+<td style="text-align: right;">0.908</td>
+<td style="text-align: right;">2.57</td>
+</tr>
+<tr>
+<td>HEBB static two-hop</td>
+<td style="text-align: right;">1100</td>
+<td style="text-align: right;">0.296 ± 0.142</td>
+<td style="text-align: right;">0.546</td>
+<td style="text-align: right;">7.53</td>
+</tr>
+<tr>
+<td>HEBB static two-hop</td>
+<td style="text-align: right;">1900</td>
+<td style="text-align: right;">0.575 ± 0.153</td>
+<td style="text-align: right;">0.871</td>
+<td style="text-align: right;">2.60</td>
+</tr>
+<tr>
+<td>HEBB + weighted Setpoint</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.613 ± 0.126</td>
+<td style="text-align: right;">0.900</td>
+<td style="text-align: right;">2.63</td>
+</tr>
+<tr>
+<td>HEBB + weighted Setpoint</td>
+<td style="text-align: right;">1100</td>
+<td style="text-align: right;">0.754 ± 0.094</td>
+<td style="text-align: right;">0.887</td>
+<td style="text-align: right;">4.73</td>
+</tr>
+<tr>
+<td>HEBB + weighted Setpoint</td>
+<td style="text-align: right;">1900</td>
+<td style="text-align: right;">0.654 ± 0.128</td>
+<td style="text-align: right;">0.933</td>
+<td style="text-align: right;">2.37</td>
+</tr>
+<tr>
+<td>HEBB + binary-degree Setpoint</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.579 ± 0.127</td>
+<td style="text-align: right;">0.883</td>
+<td style="text-align: right;">2.73</td>
+</tr>
+<tr>
+<td>HEBB + binary-degree Setpoint</td>
+<td style="text-align: right;">1100</td>
+<td style="text-align: right;">0.642 ± 0.124</td>
+<td style="text-align: right;">0.842</td>
+<td style="text-align: right;">5.30</td>
+</tr>
+<tr>
+<td>HEBB + binary-degree Setpoint</td>
+<td style="text-align: right;">1900</td>
+<td style="text-align: right;">0.796 ± 0.131</td>
+<td style="text-align: right;">0.963</td>
+<td style="text-align: right;">2.17</td>
+</tr>
+<tr>
+<td>FLUX + weighted Setpoint</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.237 ± 0.118</td>
+<td style="text-align: right;">0.417</td>
+<td style="text-align: right;">9.50</td>
+</tr>
+<tr>
+<td>FLUX + weighted Setpoint</td>
+<td style="text-align: right;">1100</td>
+<td style="text-align: right;">0.154 ± 0.132</td>
+<td style="text-align: right;">0.392</td>
+<td style="text-align: right;">6.53</td>
+</tr>
+<tr>
+<td>FLUX + weighted Setpoint</td>
+<td style="text-align: right;">1900</td>
+<td style="text-align: right;">0.237 ± 0.153</td>
+<td style="text-align: right;">0.421</td>
+<td style="text-align: right;">7.70</td>
+</tr>
+</tbody>
+</table>
+<p>At the critical post-switch wipe t=1100, weighted Setpoint increases
+recall@8 from 0.296 to 0.754 (an absolute gain of 0.458, approximately
+155% relative to static HEBB), and lowers mean retrieval pages from 7.53
+to 4.73 (approximately 37%). This is bounded evidence that changing the
+readout can mitigate the observed fixation in this constructed relevance
+regime. It does not establish superiority over modern hybrid RAG,
+biological fidelity or live-agent effectiveness.</p>
+<p>The normalisation ablation is not uniformly dominated: weighted
+coupling leads the binary-degree variant at t=1100 (0.754 versus 0.642),
+while binary-degree coupling leads at t=1900 (0.796 versus 0.654). The
+settled first-goal difference is small. The data therefore support a
+specific post-switch improvement, not universal optimality of weighted
+normalisation. Adding Setpoint to FLUX does not repair its low recall
+(0.154 post-switch versus 0.183 for static FLUX).</p>
+<p><strong>Metric caveats and reporting correction.</strong> Baseline
+selectivity measures goal-edge weights; Setpoint selectivity measures
+output fact scores (target mean divided by hub mean). These are
+different observables and should not be presented as like-for-like
+evidence of topology change. The original v0.7 export accidentally
+copied the preceding FLUX edge-sparsity value into Setpoint rows. Those
+entries are invalid; the reporting patch marks Setpoint edge sparsity as
+unavailable. Recall and page counts do not depend on that export field.
+No claim of zero obsolete-attractor leakage is established by this
+benchmark.</p>
+<h3 id="participant-observer-operational-note">6.5 Participant-Observer
 Operational Note</h3>
 <p><em>Status: anecdotal (<span class="math inline">\(n = 1\)</span>
 agent, one audit, no classification rubric). Retained as motivation
@@ -864,58 +1024,66 @@ loop in which cycles were spent auditing, summarising and pruning the
 store rather than advancing primary objectives. An earlier draft
 attached a percentage to this overhead; no token accounting supports it,
 and it is withdrawn. A 14-day instrumented audit with a published
-cycle-classification rubric is the correct replacement and is in
-progress.</p>
+cycle-classification rubric would be an appropriate replacement; a
+completed live telemetry study is not reported here.</p>
 <p><strong>Summary of §6.</strong> §6.1 rules out the reservoir framing
 at the parameters tested. §6.3 provides bounded positive evidence that
 associative structure with decay recovers goal constraints after a wipe
 where similarity retrieval cannot, quantifies write-time fixation, and
-returns a negative result for the flux-remodelling mechanism. §6.4
-motivates but does not measure operational overhead. These results
-<em>motivate</em> Morphological Memory as a design theory and constrain
-which of its components carry weight; they do not demonstrate that it
-resolves the pathologies of §1.</p>
+returns a negative result for the flux-remodelling mechanism. §6.4 tests
+a finite-step goal-conditioned readout in simulation; §6.5 motivates but
+does not measure operational overhead. These results <em>motivate</em>
+Morphological Memory as a design theory and constrain which of its
+components carry weight; they do not demonstrate that it resolves the
+pathologies of §1.</p>
 <hr />
 <h2 id="limitations-and-future-directions">7. Limitations and Future
 Directions</h2>
 <p>While Morphological Memory offers a principled framework grounded in
-basal cognition, several operational limitations must be noted: 1.
-<strong>Middleware Simulation vs. Native Hardware:</strong> When
+basal cognition, several operational limitations must be noted:</p>
+<ol type="1">
+<li><strong>Middleware Simulation vs. Native Hardware:</strong> When
 implemented via software scaffolding on fixed-weight LLMs, graph
 traversal and decay calculations run as deterministic CPU middleware.
-While these operations require negligible compute (𝒪(|<em>V</em>| +
-|<em>E</em>|) &lt; 5 ms), future research must implement these dynamics
-natively within KV-cache attention mechanisms. 2. <strong>Read-Time Goal
-Conditioning:</strong> §6.3 shows that decay alone leaves a transient
-window after a goal switch in which recall halves and retrieval cost
-triples. Neither Hebbian decay nor flux remodelling closes it. The next
-pre-declared test is whether the prospective-setpoint layer (§4.1), used
-as a read-time re-weighting of the graph rather than a prompt prefix,
-shortens that window; if it does not, Pathology 2 is not addressed by
-this framework. Decay rate <em>λ</em> and reinforcement <em>η</em> also
-require calibration on a validation split disjoint from the test split,
-with the full grid reported. 3. <strong>From Synthetic World to Agent
-Benchmark:</strong> §6.3 tests memory dynamics in a synthetic world
-whose relevance structure is co-occurrence by construction. The
-LLM-in-the-loop §5 protocol on standardised agent tasks (e.g. WebArena,
-GAIA) remains to be run, and the participant-observer note (§6.4) is
-motivation, not evidence. The synthetic result licenses running that
-benchmark; it does not substitute for it.</p>
+The current implementation uses dense matrices: storage and
+matrix-vector work are quadratic in node count, and per-read
+normalisation also scans the matrix. No sub-five-millisecond timing or
+zero-overhead guarantee is established here. Sparse implementation and
+scaling/timing measurements remain future work; native attention
+integration is a separate research direction.</li>
+<li><strong>Read-Time Goal Conditioning:</strong> §6.4 mitigates the
+post-switch deficit in this synthetic world, but does not establish
+steady-state convergence, long-horizon stability or uniform dominance of
+weighted over binary-degree normalisation. Reset-at-read dynamics differ
+from persistent runtime fields. Decay, reinforcement and readout
+parameters require a declared held-out validation protocol and
+sensitivity analysis before broad generalisation.</li>
+<li><strong>From Synthetic World to Agent Benchmark:</strong> §6.3 tests
+memory dynamics in a synthetic world whose relevance structure is
+co-occurrence by construction. The LLM-in-the-loop §5 protocol on
+standardised agent tasks (e.g. WebArena, GAIA) remains to be run, and
+the participant-observer note (§6.5) is motivation, not evidence. The
+synthetic result licenses running that benchmark; it does not substitute
+for it.</li>
+</ol>
 <hr />
 <h2 id="conclusion">8. Conclusion</h2>
-<p>To achieve true operational longevity and autonomy, synthetic agent
-architectures must move beyond the passive retrieval log. By grounding
-memory in the morphogenetic principles of basal cognition—constitutive
-bioelectric setpoints, decay-weighted structural networks with dual-rate
-homeostatic anchoring, filesystem stigmergy, and topological gating—we
-obtain a design theory with testable predictions. The evidence so far is
-modest and specific: associative structure with decay recovers
-goal-relevant constraints after a wipe where similarity retrieval
-cannot, write-time fixation is real and measurable, and the literal
-<em>Physarum</em> flow rule does not help. What the framework still owes
-is a mechanism for read-time, goal-conditioned re-weighting — the
-property that living systems appear to have and that no component tested
-here yet provides.</p>
+<p>Adaptive structural memory is a candidate approach to long-horizon
+task continuity in synthetic agents. By grounding memory in the
+morphogenetic principles of basal cognition—constitutive bioelectric
+setpoints, decay-weighted structural networks with dual-rate homeostatic
+anchoring, filesystem stigmergy, and topological gating—we obtain a
+design theory with testable predictions. The evidence so far is modest
+and specific: associative structure with decay recovers goal-relevant
+constraints after a wipe where similarity retrieval cannot, write-time
+fixation is real and measurable, and the literal <em>Physarum</em> flow
+rule does not help. The v0.7 finite-step readout supplies bounded
+positive evidence for goal-conditioned re-weighting after a switch,
+alongside negative flux results and a mixed normalisation ablation. What
+the framework still owes is independent replication, competitive
+retrieval baselines, validated parameter selection and LLM-in-the-loop
+evaluation; simulation does not establish biological equivalence or
+reliable production agency.</p>
 <hr />
 <hr />
 <h2 id="code-and-data-availability">Code and Data Availability</h2>
@@ -936,71 +1104,95 @@ sweep (<code>benchmark_wipe_v060.py</code> →
 <code>benchmark_results_v060_exploratory_mu0.5.json</code>; numpy only,
 ~100 s on a CPU), the legacy v0.3.0 toy substrates
 (<code>biofield_sim_v030.py</code>), and a qualitative interactive
-browser dashboard (<code>visualizer/index.html</code>). No result in
-this paper exists that cannot be regenerated from that repository.</p>
+browser dashboard (<code>visualizer/index.html</code>). The v0.7 readout
+experiment is supplied by <code>benchmark_setpoint_v070.py</code>. The
+original <code>benchmark_results_v070.json</code> is retained for
+provenance; use <code>benchmark_results_v070_corrected.json</code> for
+the repaired export, with the reporting-only change and local
+reproduction documented in
+<code>paper/REVISION_AUDIT_2026-10-06.md</code>. The current manuscript
+and reporting repair are supplied in this repository revision; they are
+not yet a new Zenodo deposit. The qualitative browser dashboard is not a
+live-agent benchmark. Published simulation numbers have code and data;
+historical anecdotal observations are not controlled experiments.</p>
 <h2 id="references">References</h2>
 <ol type="1">
-<li><strong>Levin, M.</strong> (2019). The computational boundary of a
-‘self’: developmental bioelectricity drives multicellularity and
+<li><p><strong>Levin, M.</strong> (2019). The computational boundary of
+a ‘self’: developmental bioelectricity drives multicellularity and
 scale-free cognition. <em>Frontiers in Psychology</em>, 10, 2688.
-https://doi.org/10.3389/fpsyg.2019.02688</li>
-<li><strong>Tseng, A. S., &amp; Levin, M.</strong> (2013). Cracking the
-bioelectric code: Probing endogenous ionic controls of pattern
+https://doi.org/10.3389/fpsyg.2019.02688</p></li>
+<li><p><strong>Tseng, A. S., &amp; Levin, M.</strong> (2013). Cracking
+the bioelectric code: Probing endogenous ionic controls of pattern
 formation. <em>Communicative &amp; Integrative Biology</em>, 6(1),
-e22595. https://doi.org/10.4161/cib.22595</li>
-<li><strong>Hansali, S., Pio-Lopez, L., Lapalme, J. V., &amp; Levin,
-M.</strong> (2025). The role of bioelectrical patterns in regulative
-morphogenesis: An evolutionary simulation and validation in planarian
-regeneration. <em>IEEE Transactions on Molecular, Biological, and
-Multi-Scale Communications</em>.</li>
-<li><strong>Pezzulo, G., &amp; Levin, M.</strong> (2015). Re-membering
-the body: applications of computational neuroscience to the top-down
-control of regeneration of limbs and other complex organs.
+e22595. https://doi.org/10.4161/cib.22595</p></li>
+<li><p><strong>Durant, F., Morokuma, J., Fields, C., Williams, K.,
+Adams, D. S., &amp; Levin, M.</strong> (2017). Long-Term, Stochastic
+Editing of Regenerative Anatomy via Targeting Endogenous Bioelectric
+Gradients. <em>Biophysical Journal</em>, 112(10), 2231–2243.
+https://doi.org/10.1016/j.bpj.2017.04.011</p></li>
+<li><p><strong>Pezzulo, G., &amp; Levin, M.</strong> (2015).
+Re-membering the body: applications of computational neuroscience to the
+top-down control of regeneration of limbs and other complex organs.
 <em>Integrative Biology</em>, 7(12), 1487–1517.
-https://doi.org/10.1039/c5ib00221d</li>
-<li><strong>Fields, C., &amp; Levin, M.</strong> (2018). Multiscale
-memory and bioelectric error correction in the
-cytoplasm–cytoskeleton–membrane system. <em>WIREs Systems Biology and
-Medicine</em>, 10(2), e1403. https://doi.org/10.1002/wsbm.1403</li>
-<li><strong>Nakagaki, T., Yamada, H., &amp; Tóth, Á.</strong> (2000).
+https://doi.org/10.1039/c5ib00221d</p></li>
+<li><p><strong>Nakagaki, T., Yamada, H., &amp; Tóth, Á.</strong> (2000).
 Maze-solving by an amoeboid organism. <em>Nature</em>, 407(6803),
-470–471. https://doi.org/10.1038/35035159</li>
-<li><strong>Tero, A., Takagi, S., Saigusa, T., Ito, K., Bebber, D. P.,
-Fricker, M. D., Yumiki, K., Kobayashi, R., &amp; Nakagaki, T.</strong>
-(2010). Rules for biologically inspired adaptive network design.
-<em>Science</em>, 327(5964), 439–442.
-https://doi.org/10.1126/science.1177894</li>
-<li><strong>Adamatzky, A.</strong> (2010). <em>Physarum Machines:
+470–471. https://doi.org/10.1038/35035159</p></li>
+<li><p><strong>Tero, A., Takagi, S., Saigusa, T., Ito, K., Bebber, D.
+P., Fricker, M. D., Yumiki, K., Kobayashi, R., &amp; Nakagaki,
+T.</strong> (2010). Rules for biologically inspired adaptive network
+design. <em>Science</em>, 327(5964), 439–442.
+https://doi.org/10.1126/science.1177894</p></li>
+<li><p><strong>Adamatzky, A.</strong> (2010). <em>Physarum Machines:
 Computers from Slime Mould</em>. World Scientific Series on Nonlinear
-Science Series A, Vol. 74. World Scientific Publishing.</li>
-<li><strong>Kuchling, F., Friston, K., Georgiev, G., &amp; Levin,
+Science Series A, Vol. 74. World Scientific Publishing.</p></li>
+<li><p><strong>Kuchling, F., Friston, K., Georgiev, G., &amp; Levin,
 M.</strong> (2020). Morphogenesis as Bayesian inference: A variational
 approach to pattern formation and control in complex biological systems.
 <em>Physics of Life Reviews</em>, 33, 88–108.
-https://doi.org/10.1016/j.plrev.2019.06.001</li>
-<li><strong>Pio-Lopez, L., Kuchling, F., Tung, A., Pezzulo, G., &amp;
+https://doi.org/10.1016/j.plrev.2019.06.001</p></li>
+<li><p><strong>Pio-Lopez, L., Kuchling, F., Tung, A., Pezzulo, G., &amp;
 Levin, M.</strong> (2022). Active inference, morphogenesis, and
 computational psychiatry. <em>Frontiers in Computational
 Neuroscience</em>, 16, 988977.
-https://doi.org/10.3389/fncom.2022.988977</li>
-<li><strong>Clark, A., &amp; Chalmers, D.</strong> (1998). The extended
-mind. <em>Analysis</em>, 58(1), 7–19.
-https://doi.org/10.1093/analys/58.1.7</li>
-<li><strong>Park, J. S., O’Brien, J. C., Cai, C. J., Morris, M. R.,
+https://doi.org/10.3389/fncom.2022.988977</p></li>
+<li><p><strong>Clark, A., &amp; Chalmers, D.</strong> (1998). The
+extended mind. <em>Analysis</em>, 58(1), 7–19.
+https://doi.org/10.1093/analys/58.1.7</p></li>
+<li><p><strong>Park, J. S., O’Brien, J. C., Cai, C. J., Morris, M. R.,
 Liang, P., &amp; Bernstein, M. S.</strong> (2023). Generative agents:
 Interactive simulacra of human behavior. In <em>Proceedings of the 36th
 Annual ACM Symposium on User Interface Software and Technology (UIST
-’23)</em>, 1–22. https://doi.org/10.1145/3586183.3606763</li>
-<li><strong>Packer, C., Fang, V., Shlapentokh-Rothman, S. G., Shakir,
-K., &amp; Gonzalez, J. E.</strong> (2023). MemGPT: Towards LLMs as
-Operating Systems. <em>arXiv preprint arXiv:2310.08560</em>.</li>
-<li><strong>Xu, W., et al.</strong> (2024). A-MEM: Dynamic Associative
-Memory for Multi-Agent Systems. <em>arXiv preprint
-arXiv:2407.08569</em>.</li>
-<li><strong>Anderson, J. R., Bothell, D., Byrne, M. D., Douglass, S.,
+’23)</em>, 1–22. https://doi.org/10.1145/3586183.3606763</p></li>
+<li><p><strong>Packer, C., Wooders, S., Lin, K., Fang, V., Patil, S. G.,
+Stoica, I., &amp; Gonzalez, J. E.</strong> (2023). MemGPT: Towards LLMs
+as Operating Systems. <em>arXiv:2310.08560</em>.
+https://doi.org/10.48550/arXiv.2310.08560</p></li>
+<li><p><strong>Xu, W., et al.</strong> (2025). A-MEM: Agentic Memory for
+LLM Agents. <em>arXiv:2502.12110</em>.
+https://doi.org/10.48550/arXiv.2502.12110 . The earlier arXiv identifier
+was unrelated and has been corrected.</p></li>
+<li><p><strong>Anderson, J. R., Bothell, D., Byrne, M. D., Douglass, S.,
 Lebiere, C., &amp; Qin, Y.</strong> (2004). An integrated theory of the
 mind. <em>Psychological Review</em>, 111(4), 1036–1060.
-https://doi.org/10.1037/0033-295X.111.4.1036</li>
+https://doi.org/10.1037/0033-295X.111.4.1036</p></li>
+<li><p><strong>Chhikara, P., Khant, D., Aryan, S., Singh, T., &amp;
+Yadav, D.</strong> (2025). Mem0: Building Production-Ready AI Agents
+with Scalable Long-Term Memory. <em>arXiv:2504.19413</em>.
+https://doi.org/10.48550/arXiv.2504.19413</p></li>
+<li><p><strong>Rasmussen, P., Paliychuk, P., Beauvais, T., Ryan, J.,
+&amp; Chalef, D.</strong> (2025). Zep: A Temporal Knowledge Graph
+Architecture for Agent Memory. <em>arXiv:2501.13956</em>.
+https://doi.org/10.48550/arXiv.2501.13956</p></li>
+<li><p><strong>Reid, C. R., Latty, T., Dussutour, A., &amp; Beekman,
+M.</strong> (2012). Slime mold uses an externalized spatial “memory” to
+navigate in complex environments. <em>Proceedings of the National
+Academy of Sciences</em>, 109(43), 17490–17494.
+https://doi.org/10.1073/pnas.1215037109</p></li>
+<li><p><strong>Fields, C., &amp; Levin, M.</strong> (2018). Multiscale
+memory and bioelectric error correction in the
+cytoplasm–cytoskeleton–membrane system. <em>WIREs Systems Biology and
+Medicine</em>, 10(2), e1410. https://doi.org/10.1002/wsbm.1410</p></li>
 </ol>
 </body>
 </html>

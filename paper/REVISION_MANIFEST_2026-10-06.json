@@ -1,0 +1,24 @@
+{
+  "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "numpy": "2.5.3",
+  "threads_for_fresh_run": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "baseline_commit": "ae9402d086ba769f0219de6e0a18dab21cc3fa10",
+  "note": "Repository revision; no live-runtime validation. Original baseline and reporting-only repaired export remain distinct from the fresh verification run.",
+  "sha256": {
+    "benchmark_setpoint_v070.py": "4c5570c5b7841d5d9b57fe7087af2084be2a6586a984a84288c7c25583dd689d",
+    "setpoint_layer.py": "65ad6d11827bfb9ffe2c37a22a0d59e10c68c1c9f74ea3ab2da575bcaba88d99",
+    "benchmark_results_v070.json": "995a946c0c06b793ed93923add5124fce40f4c33f38c6c757d967a7d723b5753",
+    "benchmark_results_v070_corrected.json": "ad8ae56e0f3c8ff8293af023085b619fb704492dbc1aad9fd0ee10782923c220",
+    "paper/manuscript.md": "528a2283c4661d478d842deca2fe05f03263a67758014484e8550fd9916e16fd",
+    "paper/manuscript.html": "5fd9c68360536d736ff8428b83a9033a83f27b8da5f34824f9a7b3d4de0960e0",
+    "paper/manuscript.pdf": "b199f84120a326a803b3139b2458f7966033fdce1af5acf196e6b97016a2144d",
+    "paper/academic.css": "4b3a4a5e2fc4319ecbbd544edf34f1ef7a008cbb7fd6b0ccc9b5fde8ce79219f",
+    "paper/figure1_architecture.png": "d0ee2ebd960970a469eaaca5d32342e9281c10f14a801efcefad20e74111669c",
+    "scripts/render_paper.py": "83a3ebf8c5da48638f8b3f22286a014efd0cc07fca574fa549f9ee7fcd56afba",
+    "tests/test_benchmark_reporting.py": "bb1c42312b657760ca2a0bdd3c8a8e242877f059b25711202ef1da8ce0db6ac4"
+  }
+}

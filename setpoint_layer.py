@@ -5,14 +5,16 @@ Author: Amity Craucamp
 Project: Open Amity / BiofieldSim v0.7.0
 
 Implements read-time bioelectric setpoint dynamics over topological cognitive graphs:
-1. Clamps active goal prospective potential attractor (V_target).
+1. Resets potentials per read and fixes the active goal target (V_target = 1).
+   The goal potential is initialised to 1 but is not re-clamped after each step.
 2. Executes dynamic perturbation relaxation loop:
      dV/dt = -gamma * (V - V_target) + leak * (G @ V) - decay * V
-   where G is the symmetric degree-normalized coupling conductance matrix:
+   where G is the symmetric degree-normalised coupling conductance matrix:
      G_ij = W_ij / sqrt(d_i * d_j)
-   (supporting weighted degree normalization or unweighted binary degree).
-3. Breaks write-time salience fixation post goal-switch, dynamically
-   suppressing obsolete historical attractors and hub distractors.
+   (supporting weighted degree normalisation or unweighted binary degree).
+3. Returns finite-step fact scores for goal-conditioned retrieval.
+   The synthetic benchmark measures post-switch improvements; convergence,
+   zero obsolete-attractor leakage and live-agent effectiveness are not established.
 """
 
 import numpy as np
@@ -48,7 +50,8 @@ class SetpointLayer:
 
     def set_goal(self, goal_idx: int, goal_setpoint: np.ndarray = None):
         """
-        Pin active goal attractor. Clamps the goal node setpoint to 1.0.
+        Reset potentials and set the active goal target and initial potential to 1.0.
+        The target stays fixed; subsequent steps may change the goal potential.
         Optional goal_setpoint provides prior factual bias over fact nodes.
         """
         assert 0 <= goal_idx < self.n_goals, f"Invalid goal_idx: {goal_idx}"
@@ -73,7 +76,7 @@ class SetpointLayer:
 
     def _compute_coupling(self, W: np.ndarray) -> np.ndarray:
         """
-        Compute symmetric degree-normalized conductance coupling matrix:
+        Compute symmetric degree-normalised conductance coupling matrix:
         G_ij = W_ij / sqrt(d_i * d_j)
         """
         if self.norm == "binary":
@@ -108,7 +111,7 @@ class SetpointLayer:
 
     def read_scores(self, W: np.ndarray, goal_idx: int, n_steps: int = 15) -> np.ndarray:
         """
-        Condition layer on goal_idx, relax dynamic loop, and return fact scores.
+        Reset for goal_idx, perform n_steps (not a convergence test), and return fact scores.
         """
         self.set_goal(goal_idx)
         self.relax(W, n_steps=n_steps)

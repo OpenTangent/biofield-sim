@@ -49,7 +49,7 @@ draw_rounded_box(draw, box1, fill="#eff6ff", outline="#2563eb", width=4)
 draw.text((WIDTH//2, 125), "Prospective Memory Layer", font=title_font, fill="#1e3a8a", anchor="mm")
 draw.text((WIDTH//2, 175), "Bioelectric Target Attractors & Long-Term Trajectory Setpoints", font=subtitle_font, fill="#2563eb", anchor="mm")
 draw.text((WIDTH//2, 235), "Constitutive, forward-looking attractor states that continuously bias generative action selection,", font=body_font, fill="#334155", anchor="mm")
-draw.text((WIDTH//2, 270), "eliminating the necessity to retrospectively recall or re-query core goals.", font=body_font, fill="#334155", anchor="mm")
+draw.text((WIDTH//2, 270), "intended to reduce dependence on retrospective goal queries.", font=body_font, fill="#334155", anchor="mm")
 
 # Arrow 1 -> 2
 draw_arrow_down(draw, (WIDTH//2, 310), (WIDTH//2, 410), color="#2563eb", width=4)
@@ -60,7 +60,7 @@ draw_rounded_box(draw, box2, fill="#f0fdf4", outline="#059669", width=4)
 draw.text((WIDTH//2, 455), "Topological Gating & Domain Boundaries", font=title_font, fill="#064e3b", anchor="mm")
 draw.text((WIDTH//2, 505), "Gap-Junction Compartmentalisation: Wings & Functional Rooms", font=subtitle_font, fill="#059669", anchor="mm")
 draw.text((WIDTH//2, 565), "Dynamically modulated conductance barriers separating relational priors from factual stores,", font=body_font, fill="#334155", anchor="mm")
-draw.text((WIDTH//2, 600), "preventing catastrophic semantic dilution and unguided cross-domain associative bleed.", font=body_font, fill="#334155", anchor="mm")
+draw.text((WIDTH//2, 600), "intended to reduce irrelevant cross-domain retrieval; evaluation pending.", font=body_font, fill="#334155", anchor="mm")
 
 # Branching arrows from Box 2 to Box 3 & 4
 mid_split_y = 730
@@ -75,8 +75,8 @@ draw.text((625, 930), "Dual-Rate Homeostasis & Intrinsic Decay", font=subtitle_f
 draw.text((625, 995), "Associative co-activation graph with continuous metabolic", font=body_font, fill="#334155", anchor="mm")
 draw.text((625, 1035), "decay (Anderson/ACT-R base-level learning). Recovers", font=body_font, fill="#334155", anchor="mm")
 draw.text((625, 1075), "goal-relevant constraints post context wipe (recall@8 = 0.61)", font=body_font, fill="#334155", anchor="mm")
-draw.text((625, 1115), "while flat cosine retrieval falls to chance (0.25).", font=body_font, fill="#334155", anchor="mm")
-draw.text((625, 1165), "[Mechanistically verified in biofield_sim v0.6.0]", font=label_font, fill="#6b21a8", anchor="mm")
+draw.text((625, 1115), "versus flat semantic cosine recall 0.25 (chance = 0.05).", font=body_font, fill="#334155", anchor="mm")
+draw.text((625, 1165), "[Bounded synthetic retrieval evidence: v0.6.0]", font=label_font, fill="#6b21a8", anchor="mm")
 
 # Box 4: Filesystem as Extended Phenotype (Bottom Right)
 box4 = (1050 + 100, 820, 2100, 1220)
@@ -86,13 +86,13 @@ draw.text((1575, 930), "External Stigmergy & Verifiable Traces", font=subtitle_f
 draw.text((1575, 995), "Clark & Chalmers extended mind architecture where the", font=body_font, fill="#334155", anchor="mm")
 draw.text((1575, 1035), "local environment, filesystem, and version-controlled", font=body_font, fill="#334155", anchor="mm")
 draw.text((1575, 1075), "code repositories serve as durable morphogenetic stigmergy,", font=body_font, fill="#334155", anchor="mm")
-draw.text((1575, 1115), "immune to session reboots and context window limits.", font=body_font, fill="#334155", anchor="mm")
-draw.text((1575, 1165), "[Operational stigmergic grounding via Open Amity]", font=label_font, fill="#92400e", anchor="mm")
+draw.text((1575, 1115), "supporting state recovery subject to access and validation.", font=body_font, fill="#334155", anchor="mm")
+draw.text((1575, 1165), "[Design mechanism; controlled agent evaluation pending]", font=label_font, fill="#92400e", anchor="mm")
 
 # Title / Caption at bottom
 # Caption handled by document
 
 # Save
-output_path = "/home/amity/Documents/Amity/Code/biofield_sim/paper/figure1_architecture.png"
+output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figure1_architecture.png")
 img.save(output_path, "PNG", dpi=(300, 300))
 print("Saved diagram to:", output_path)

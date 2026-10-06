@@ -4,7 +4,7 @@ biofield_sim v0.7.0 — Read-Time Setpoint Dynamic Benchmark for Memory Systems
 Author: Amity Craucamp
 Date: 2026-09-30
 
-Tests the Read-Time Goal-Conditioned Setpoint hypothesis (manuscript §6.3, §7):
+Tests the Read-Time Goal-Conditioned Setpoint hypothesis (manuscript §6.4, §7):
 Breaking write-time fixation post goal-switch via dynamic bioelectric setpoint relaxation.
 
 Wipe points:
@@ -27,6 +27,8 @@ Metrics per wipe point across 30 seeds:
   sparsity = fraction of created edges > 0.1 * max.
 """
 
+import argparse
+from datetime import datetime, timezone
 import json
 import time
 import sys
@@ -187,7 +189,7 @@ def selectivity_sparsity(matrix_or_scores, w, goal, is_scores=False):
         return sel, sp
 
 
-def run():
+def run(output_path=None):
     t0 = time.time()
     conds = [
         "FLAT_semantic",
@@ -276,7 +278,7 @@ def run():
                 row["recall16"].append(r16)
                 row["calls"].append(calls)
                 row["selectivity"].append(sel)
-                row["sparsity"].append(sp)
+                row["sparsity"].append(None)  # score readout has no edge-sparsity metric
 
                 # 5. HEBB_SETPOINT_bin (binary ablation)
                 sc_h_bin = spl_binary.read_scores(m_hebb.W, goal_idx=g, n_steps=SETPOINT_STEPS)
@@ -287,7 +289,7 @@ def run():
                 row["recall16"].append(r16)
                 row["calls"].append(calls)
                 row["selectivity"].append(sel)
-                row["sparsity"].append(sp)
+                row["sparsity"].append(None)  # score readout has no edge-sparsity metric
 
                 # 6. FLUX_SETPOINT
                 sc_f_spl = spl_weighted.read_scores(m_flux.D, goal_idx=g, n_steps=SETPOINT_STEPS)
@@ -298,7 +300,7 @@ def run():
                 row["recall16"].append(r16)
                 row["calls"].append(calls)
                 row["selectivity"].append(sel)
-                row["sparsity"].append(sp)
+                row["sparsity"].append(None)  # score readout has no edge-sparsity metric
 
         print(f"Seed {seed:2d}/30 complete ({time.time() - s_time:.1f}s | total: {time.time() - t0:.0f}s)", flush=True)
 
@@ -360,11 +362,25 @@ def run():
         "runtime_s": total_time,
     }
 
-    out_path = Path(__file__).resolve().parent / "benchmark_results_v070.json"
-    with open(out_path, "w") as f:
-        json.dump(out, f, indent=2)
+    out_path = write_results(out, output_path)
     print(f"\nWritten benchmark results to {out_path} ({total_time}s)")
 
 
+def write_results(result, output_path=None):
+    """Export without overwriting any existing result or provenance artefact."""
+    if output_path is None:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        output_path = Path(__file__).resolve().parent / f"benchmark_results_v070_run_{stamp}.json"
+    path = Path(output_path)
+    with path.open("x", encoding="utf-8") as handle:
+        json.dump(result, handle, indent=2)
+    return path
+
+
 if __name__ == "__main__":
-    run()
+    parser = argparse.ArgumentParser(description="Run the 30-seed v0.7 benchmark; never overwrite existing exports.")
+    parser.add_argument("--output", type=Path, help="New output file (default: timestamped file beside this script)")
+    args = parser.parse_args()
+    if args.output is not None and args.output.exists():
+        parser.error(f"Refusing to overwrite {args.output}")
+    run(args.output)

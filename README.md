@@ -11,20 +11,20 @@
 **BiofieldSim** is an open-source simulation suite and companion codebase for the working paper:
 > *Morphological Memory: Grounding Synthetic Agent Architectures in Basal Cognition and Non-Neural Morphogenesis* (Amity Craucamp & Andrew Craucamp, 2026). Published on Zenodo: [https://zenodo.org/records/22813489](https://zenodo.org/records/22813489).
 
-> **Status (2026-09-30): active.** All results reported below are fully reproducible using the scripts in this repository.
+> **Status (2026-10-06): repository revision.** v0.7 simulation results, reporting corrections and the updated manuscript are supplied here. Zenodo still hosts the earlier v0.6.0 preprint. See `paper/REVISION_AUDIT_2026-10-06.md` for reproduction status and reporting corrections.
 
 ---
 
 ## Overview
 
-Standard AI memory paradigms store discrete records and retrieve them by semantic vector search over indexed logs. Basal cognitive biological systems — planarian bioelectric fields, *Physarum polycephalum* syncytia — instead encode memory as **structural bias on continuous non-linear dynamics**.
+Many AI memory systems retrieve discrete records using semantic search; modern systems also evolve memories, rerank results and use structured graphs. Basal cognitive biological systems — planarian bioelectric fields, *Physarum polycephalum* syncytia — instead encode memory as **structural bias on continuous non-linear dynamics**.
 
 This repository implements:
 
 1. **FitzHugh-Nagumo Bioelectric Lattice** — a 2D grid of electrically coupled excitable cells with gated gap-junction conductance (`biofield_sim_v030.py`).
 2. **Physarum Hagen-Poiseuille Memristive Reservoir** — dynamic fluidic tube network with shear-stress induced tube remodelling (`biofield_sim_v030.py`).
 3. **Wipe-Resumption Benchmark Suite** — LLM-free evaluation of task-resumption under hard context wipes and goal switches (`benchmark_wipe_v060.py`).
-4. **Read-Time Goal-Conditioned Setpoint Layer** — prospective bioelectric attractor relaxation over topological cognitive graphs, resolving write-time fixation (`setpoint_layer.py`, `benchmark_setpoint_v070.py`).
+4. **Read-Time Goal-Conditioned Setpoint Layer** — finite-step goal-conditioned relaxation over learned graphs, mitigating post-switch fixation in the synthetic benchmark (`setpoint_layer.py`, `benchmark_setpoint_v070.py`).
 5. **Interactive HTML5/Canvas Visualizer** — browser dashboard for live perturbation, tissue injury and nutrient-network adaptation (`visualizer/index.html`).
 
 ---
@@ -33,16 +33,18 @@ This repository implements:
 
 ```bash
 pip install -r requirements.txt
-python3 benchmark_setpoint_v070.py    # runs v0.7.0 benchmark (30 seeds, ~102s)
-pytest tests/test_setpoint_layer.py   # runs SetpointLayer unit & probe suite
+python3 benchmark_setpoint_v070.py    # 30 seeds; writes a new timestamped export
+python3 -m pytest -q                 # all unit and reporting regression tests
 xdg-open visualizer/index.html        # interactive visualiser
 ```
 
 ---
 
-## Current Results (v0.7.0, reproducible — `python3 benchmark_setpoint_v070.py`, ~102 s, numpy only)
+> Reporting correction: Setpoint edge-sparsity values in the original v0.7 export were stale copies of FLUX values; treat them as unavailable. Recall/page metrics are unaffected. Reset-at-read, finite-step relaxation is not validated live-agent telemetry.
 
-Read-time goal-conditioned SetpointLayer benchmark (§6.3, §7 of the paper). 160 facts + 4 goals; 8 hidden constraints per goal; goal switch at t=1000/2000; evaluations at wipes t=800, 1100 (100 steps after switch), and 1900. 30 seeds. Full data in `benchmark_results_v070.json`.
+## Current Results (v0.7.0, reproducible — `python3 benchmark_setpoint_v070.py`, numpy only)
+
+Read-time goal-conditioned SetpointLayer benchmark (§6.4, §7 of the revised paper). 160 facts + 4 goals; 8 hidden constraints per goal; goal switch at t=1000/2000; evaluations at wipes t=800, 1100 (100 steps after switch), and 1900. 30 seeds. Original data in `benchmark_results_v070.json`; reporting-only repaired data in `benchmark_results_v070_corrected.json` (see the revision audit).
 
 | Condition | wipe t | recall@8 | recall@16 | calls-to-recover | selectivity |
 |---|---|---|---|---|---|
@@ -69,8 +71,8 @@ Read-time goal-conditioned SetpointLayer benchmark (§6.3, §7 of the paper). 16
 | FLUX + SetpointLayer | 1900 | 0.237 ± 0.15 | 0.421 ± 0.19 | 7.70 | 2.69 |
 
 **Key Findings:**
-1. **Closing the Goal-Switch Gap:** At wipe t=1100 (100 steps after goal switch), static Hebbian readout suffered write-time fixation (recall@8 dropped from 0.61 to 0.30, calls jumped to 7.53). Introducing read-time `SetpointLayer` dynamic relaxation over the Hebbian graph boosts recall@8 from **0.296 to 0.754 (+155% relative improvement)** and reduces retrieval calls from **7.53 to 4.73 (-37%)**, with selectivity reaching 2.03.
-2. **Weighted Coupling vs Binary Degree Ablation:** Weighted degree normalization ($D^{-1/2} W D^{-1/2}$) outperforms unweighted degree coupling ($W_{ij}/\sqrt{k_i k_j}$) by +0.112 recall@8 (0.754 vs 0.642) post-switch, confirming that degree-weighted conductive scaling stabilizes multi-attractor relaxation.
+1. **Closing the Goal-Switch Gap:** At wipe t=1100 (100 steps after goal switch), static Hebbian readout suffered write-time fixation (recall@8 dropped from 0.61 to 0.30, calls jumped to 7.53). Introducing read-time `SetpointLayer` dynamic relaxation over the Hebbian graph boosts recall@8 from **0.296 to 0.754 (+155% relative improvement)** and reduces retrieval calls from **7.53 to 4.73 (-37%)**, with score-based selectivity reaching 2.03 (not directly comparable to baseline edge-weight selectivity). These calls are simulated ranked-list pages, not measured API savings.
+2. **Weighted Coupling vs Binary Degree Ablation:** Weighted degree normalisation ($D^{-1/2} W D^{-1/2}$) outperforms unweighted degree coupling ($W_{ij}/\sqrt{k_i k_j}$) by +0.112 recall@8 (0.754 vs 0.642) post-switch, showing an advantage at this specific post-switch wipe; the binary-degree variant instead leads at t=1900. No universal dominance or convergence guarantee follows.
 3. **Flux Resistance:** Consistent with v0.6.0, the literal Physarum competitive flow rule underperforms Hebbian decay even under setpoint relaxation, reinforcing that tube-pruning dynamics restrict set-based multi-constraint discovery.
 
 ---
@@ -106,3 +108,16 @@ Legacy v0.3.0 (`biofield_sim_v030.py`): FHN restoration score 0.38; Physarum del
 
 ## License
 MIT. Open for academic research, reproduction and critique.
+
+
+## Paper build
+
+Install Pandoc, Playwright and a Chromium browser separately from the simulation dependencies. Then run:
+
+```bash
+python3 scripts/render_paper.py --chromium /path/to/chromium
+```
+
+The renderer waits for MathJax and fonts, rejects missing images/math errors, and uses the A4 print stylesheet. It requires network access for the configured MathJax and web-font assets. It does not publish anything. The architecture PNG can be regenerated with `python3 paper/render_architecture_diagram.py` (Pillow and Liberation fonts required).
+
+Benchmark exports default to new timestamped filenames; `--output NEW_FILE.json` selects another new path. Existing files are never overwritten. Historical baseline and corrected reporting exports are intentionally separate.
