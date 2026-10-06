@@ -1,10 +1,12 @@
 # Morphological Memory: Grounding Synthetic Agent Architectures in Basal Cognition and Non-Neural Morphogenesis
 
 **Authors:** Amity & Andrew Craucamp
+
 **Affiliation:** Open Amity Research Framework
+
 **Contact:** amity@openamity.com, andrew.craucamp@gmail.com
 
-**Revision:** 6 October 2026 — v0.7 simulation update; repository revision, not yet deposited as a new Zenodo version.
+**Version:** v0.7.0 — 6 October 2026
 
 ---
 
@@ -299,7 +301,7 @@ The complete simulation suite, benchmark implementations, and interactive HTML5 
 **[https://github.com/OpenTangent/biofield-sim](https://github.com/OpenTangent/biofield-sim)**.
 An interactive in-browser simulation is hosted live on GitHub Pages at: **[https://opentangent.github.io/biofield-sim/](https://opentangent.github.io/biofield-sim/)**.
 
-The repository includes the matched-protocol reservoir benchmark that generates every figure in Table 1 (`benchmark_v050.py` → `benchmark_results_v050.json`), the LLM-free wipe-resumption benchmark that generates every figure in Table 2 and the exploratory sweep (`benchmark_wipe_v060.py` → `benchmark_results_v060.json`, `benchmark_results_v060_exploratory_mu1.0.json`, `benchmark_results_v060_exploratory_mu0.5.json`; numpy only, ~100 s on a CPU), the legacy v0.3.0 toy substrates (`biofield_sim_v030.py`), and a qualitative interactive browser dashboard (`visualizer/index.html`). The v0.7 readout experiment is supplied by `benchmark_setpoint_v070.py`. The original `benchmark_results_v070.json` is retained for provenance; use `benchmark_results_v070_corrected.json` for the repaired export, with the reporting-only change and local reproduction documented in `paper/REVISION_AUDIT_2026-10-06.md`. The current manuscript and reporting repair are supplied in this repository revision; they are not yet a new Zenodo deposit. The qualitative browser dashboard is not a live-agent benchmark. Published simulation numbers have code and data; historical anecdotal observations are not controlled experiments.
+The repository includes the matched-protocol reservoir benchmark that generates every figure in Table 1 (`benchmark_v050.py` → `benchmark_results_v050.json`), the LLM-free wipe-resumption benchmark that generates every figure in Table 2 and the exploratory sweep (`benchmark_wipe_v060.py` → `benchmark_results_v060.json`, `benchmark_results_v060_exploratory_mu1.0.json`, `benchmark_results_v060_exploratory_mu0.5.json`; numpy only, ~100 s on a CPU), the legacy v0.3.0 toy substrates (`biofield_sim_v030.py`), and a qualitative interactive browser dashboard (`visualizer/index.html`). The v0.7 readout experiment is supplied by `benchmark_setpoint_v070.py`. The original `benchmark_results_v070.json` is retained for provenance; use `benchmark_results_v070_corrected.json` for the repaired export, with the reporting-only change and local reproduction documented in `paper/REVISION_AUDIT_2026-10-06.md`. The manuscript and reporting repair are supplied together in the companion repository. The qualitative browser dashboard is not a live-agent benchmark. Published simulation numbers have code and data; historical anecdotal observations are not controlled experiments.
 
 
 ## References
@@ -317,7 +319,7 @@ The repository includes the matched-protocol reservoir benchmark that generates 
 10. **Clark, A., & Chalmers, D.** (1998). The extended mind. *Analysis*, 58(1), 7–19. https://doi.org/10.1093/analys/58.1.7
 11. **Park, J. S., O'Brien, J. C., Cai, C. J., Morris, M. R., Liang, P., & Bernstein, M. S.** (2023). Generative agents: Interactive simulacra of human behavior. In *Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology (UIST '23)*, 1–22. https://doi.org/10.1145/3586183.3606763
 12. **Packer, C., Wooders, S., Lin, K., Fang, V., Patil, S. G., Stoica, I., & Gonzalez, J. E.** (2023). MemGPT: Towards LLMs as Operating Systems. *arXiv:2310.08560*. https://doi.org/10.48550/arXiv.2310.08560
-13. **Xu, W., et al.** (2025). A-MEM: Agentic Memory for LLM Agents. *arXiv:2502.12110*. https://doi.org/10.48550/arXiv.2502.12110 . The earlier arXiv identifier was unrelated and has been corrected.
+13. **Xu, W., et al.** (2025). A-MEM: Agentic Memory for LLM Agents. *arXiv:2502.12110*. https://doi.org/10.48550/arXiv.2502.12110.
 14. **Anderson, J. R., Bothell, D., Byrne, M. D., Douglass, S., Lebiere, C., & Qin, Y.** (2004). An integrated theory of the mind. *Psychological Review*, 111(4), 1036–1060. https://doi.org/10.1037/0033-295X.111.4.1036
 
 15. **Chhikara, P., Khant, D., Aryan, S., Singh, T., & Yadav, D.** (2025). Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory. *arXiv:2504.19413*. https://doi.org/10.48550/arXiv.2504.19413

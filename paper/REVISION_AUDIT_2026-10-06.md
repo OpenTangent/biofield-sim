@@ -54,3 +54,8 @@ Bibliography corrections include:
 ## Remaining evidence boundaries
 
 Independent replication, competitive retrieval baselines, held-out parameter selection, scaling/timing measurements and LLM-in-the-loop evaluation remain pending. Simulation does not validate live Open Amity, establish biological equivalence, or measure API savings. The participant-observer note is anecdotal motivation only.
+
+
+## Upload-copy preparation
+
+At the project owner's request, temporary Zenodo deposit-status wording was removed from the manuscript header and availability section. The stable header reads “Version: v0.7.0 — 6 October 2026”. Author, affiliation and contact lines were separated; the A-MEM correction history remains here rather than inside its bibliography entry. Source Serif 4 body text and Source Sans 3 headings/tables were retained after visual inspection; PDF fonts are embedded. No scientific results or code calculations changed, and no Zenodo publication is implied.
