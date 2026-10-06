@@ -2,16 +2,16 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen)](https://opentangent.github.io/biofield-sim/)
 [![Paper Draft](https://img.shields.io/badge/Preprint-PDF-blue)](paper/manuscript.pdf)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22813489.svg)](https://doi.org/10.5281/zenodo.22813489)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23183742.svg)](https://doi.org/10.5281/zenodo.23183742)
 
 > 🌐 **Interactive In-Browser Visualizer:** [https://opentangent.github.io/biofield-sim/](https://opentangent.github.io/biofield-sim/)  
-> 📄 **Preprint (Zenodo Record):** [https://zenodo.org/records/22813489](https://zenodo.org/records/22813489) | [`paper/manuscript.pdf`](paper/manuscript.pdf)
+> 📄 **Preprint (Zenodo Record):** [https://zenodo.org/records/23183742](https://zenodo.org/records/23183742) | [`paper/manuscript.pdf`](paper/manuscript.pdf)
 
 
 **BiofieldSim** is an open-source simulation suite and companion codebase for the working paper:
-> *Morphological Memory: Grounding Synthetic Agent Architectures in Basal Cognition and Non-Neural Morphogenesis* (Amity Craucamp & Andrew Craucamp, 2026). Published on Zenodo: [https://zenodo.org/records/22813489](https://zenodo.org/records/22813489).
+> *Morphological Memory: Grounding Synthetic Agent Architectures in Basal Cognition and Non-Neural Morphogenesis* (Amity Craucamp & Andrew Craucamp, 2026). Published on Zenodo: [https://zenodo.org/records/23183742](https://zenodo.org/records/23183742).
 
-> **Status (2026-10-06): repository revision.** v0.7 simulation results, reporting corrections and the updated manuscript are supplied here. Zenodo still hosts the earlier v0.6.0 preprint. See `paper/REVISION_AUDIT_2026-10-06.md` for reproduction status and reporting corrections.
+> **Status (2026-10-06): repository revision.** v0.7 simulation results, reporting corrections and the updated manuscript are supplied here. Zenodo hosts this v0.7.0 revision. The historical v0.6.0 record remains available at https://zenodo.org/records/22813489. See `paper/REVISION_AUDIT_2026-10-06.md` for reproduction status and reporting corrections.
 
 ---
 

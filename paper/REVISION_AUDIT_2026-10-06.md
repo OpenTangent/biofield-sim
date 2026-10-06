@@ -1,6 +1,6 @@
 # v0.7 manuscript and reporting revision audit — 6 October 2026
 
-Status: repository revision authorised for publication by the project owner. A new Zenodo version has not been deposited by the agent; the existing Zenodo record remains v0.6.0. Git push authorisation is not a journal submission or independent scientific certification.
+Status: repository revision authorised for publication by the project owner. The project owner published v0.7.0 on Zenodo at https://zenodo.org/records/23183742 (DOI: 10.5281/zenodo.23183742). The agent verified the published PDF checksum and size against the repository copy; both match. The historical v0.6.0 version remains available. Git push authorisation is not a journal submission or independent scientific certification.
 
 ## Reproduction and provenance
 
